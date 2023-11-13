@@ -6,23 +6,39 @@ import CautionRed from "../assets/collection/CautionRed";
 interface CollectionCautionModalProps {
   modal: RefObject<HTMLIonModalElement>;
   openId: string;
-  title: string;
-  content: string;
+  type: boolean;
 }
 
 const CollectionCautionModal = ({
   modal,
   openId,
-  title,
-  content,
+  type,
 }: CollectionCautionModalProps) => {
   return (
     <StyledIonModal ref={modal} trigger={openId}>
-      <BaseDiv>
-        <CautionRed />
-        <CollectionButtonDiv>{title}</CollectionButtonDiv>
-        <StyledTextBox>{content}</StyledTextBox>
-      </BaseDiv>
+      {type ? (
+        <BaseDiv>
+          <CautionRed />
+          <CollectionButtonDiv>구름 컬렉션</CollectionButtonDiv>
+          <StyledTextBox>
+            구름 컬렉션은 1년 목표를
+            <br />
+            달성하면 받는 완성 구름이에요!
+          </StyledTextBox>
+          <StyledCautionTextBox>
+            단기목표에서는 받을 수 없어요!
+          </StyledCautionTextBox>
+        </BaseDiv>
+      ) : (
+        <BaseDiv>
+          <CautionRed />
+          <CollectionButtonDiv>미니 구름 컬렉션</CollectionButtonDiv>
+          <StyledTextBox>
+            미니 구름은 한 달 동안 지속해서
+            <br /> 수증기 4개를 모으면 받는 구름을 말해요!
+          </StyledTextBox>
+        </BaseDiv>
+      )}
     </StyledIonModal>
   );
 };
@@ -35,10 +51,13 @@ const StyledIonModal = styled(IonModal)`
   --height: fit-content;
   --border-radius: 6px;
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-  --border-radius: 3rem;
+  --border-radius: 2rem;
 `;
 
 const BaseDiv = styled.div`
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,9 +67,7 @@ const BaseDiv = styled.div`
   width: 100%;
 
   width: 16.3rem;
-  height: 11.8rem;
 
-  border-radius: 16px;
   background-color: #fff;
 `;
 
@@ -71,6 +88,7 @@ const CollectionButtonDiv = styled.div`
   width: 9rem;
 
   border: 0;
+  border-radius: 0.5rem;
 
   position: relative;
 `;
@@ -79,5 +97,13 @@ const StyledTextBox = styled.div`
   margin-top: 0.5rem;
   text-align: center;
   font-size: 0.8rem;
+  width: 14rem;
+`;
+
+const StyledCautionTextBox = styled.div`
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #fc8787;
   width: 10rem;
 `;

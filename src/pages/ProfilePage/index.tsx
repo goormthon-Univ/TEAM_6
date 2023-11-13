@@ -6,6 +6,7 @@ import { Chart } from "../../assets/profile/Chart";
 import ProfileOngoingGoalBar from "../../components/ProfileOngoingGoalBar";
 import ProfileCompletedGoalBar from "../../components/ProfileCompletedGoalBar";
 import Checked from "../../assets/profile/Checked";
+import { IonContent } from "@ionic/react";
 
 const ProfilePage = () => {
   return (
@@ -69,7 +70,7 @@ const UserInfoTopDiv = styled.div`
   border-bottom: 1px solid #9c9c9c;
 `;
 
-const BaseDiv = styled.div`
+const BaseDiv = styled(IonContent)`
   display: flex;
   flex-direction: column;
   align-items: center;
