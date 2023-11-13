@@ -90,6 +90,7 @@ export default CollectionModal;
 
 const StyledIonModal = styled(IonModal)`
   --height: 80%;
+  --border-radius: 1rem;
 `;
 
 const ModalContentContainer = styled.div`
