@@ -48,9 +48,10 @@ const CollectionPage = () => {
         openId="cloud"
         title="구름"
         GoalList={[
-          { imgId: "1", name: "구름 No.1" },
-          { imgId: "1", name: "구름 No.2" },
-          { imgId: "2", name: "구름 No.3" },
+          { imgId: "5", name: "구름 No.1" },
+          { imgId: "6", name: "구름 No.2" },
+          { imgId: "7", name: "구름 No.3" },
+          { imgId: "8", name: "구름 No.4" },
         ]}
       />
       <CollectionModal
@@ -60,6 +61,8 @@ const CollectionPage = () => {
         GoalList={[
           { imgId: "1", name: "미니 구름 No.1" },
           { imgId: "2", name: "미니 구름 No.2" },
+          { imgId: "3", name: "미니 구름 No.3" },
+          { imgId: "4", name: "미니 구름 No.4" },
         ]}
       />
       <CollectionCautionModal
