@@ -193,11 +193,13 @@ const GoalCancleButton = styled(IonButton)`
   align-items: center;
 
   text-align: center;
-  --ion-color-primary: #f1f1f1;
-  --ion-color-primary-shade: #ffb8ae;
-  /* background-color: #f1f1f1; */
   font-size: 0.7rem;
-  color: #5c5c5c;
+
+  --color: #5c5c5c;
+  --color-activated: #ffffff;
+  --background: #f1f1f1;
+  --background-activated: #ffb8ae;
+  --background-focused: #ffb8ae;
 
   height: 0.7rem;
 
@@ -209,11 +211,13 @@ const GoalDeleteButton = styled(IonButton)`
   align-items: center;
 
   text-align: center;
-  --ion-color-primary: #9c9c9cf1;
-  --ion-color-primary-shade: #ffb8ae;
-  /* background-color: #9c9c9cf1; */
   font-size: 0.7rem;
-  color: #ffffff;
+
+  --color: #ffffff;
+  --color-activated: #ffffff;
+  --background: #9c9c9cf1;
+  --background-activated: #5c5c5c;
+  --background-focused: #5c5c5c;
 
   height: 1.2rem;
 
