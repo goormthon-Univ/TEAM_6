@@ -5,7 +5,7 @@ import {
   IonList,
   IonModal,
 } from "@ionic/react";
-import React, { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import styled from "styled-components";
 import DownArrow from "../assets/collection/DownArrow";
 import CollectionCloudCard from "./CollectionCloudCard";

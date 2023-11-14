@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Lock from "../assets/collection/Lock";
 import CloudImageById from "../assets/collection/CloudImageById";
