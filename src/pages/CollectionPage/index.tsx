@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CloudCircleFrame from "../../components/CloudCircleFrame";
 import Cloud02 from "../../assets/cloudimages/Cloud02";
 import { Cloud01 } from "../../assets/cloudimages/Cloud01";
-import { IonButton } from "@ionic/react";
+import { IonButton, IonPage } from "@ionic/react";
 import BookMark from "../../assets/collection/BookMark";
 import CollectionModal from "../../components/CollectionModal";
 import Caution from "../../assets/collection/Caution";
@@ -75,15 +75,13 @@ const CollectionPage = () => {
         openId="miniCloudCaution"
         type={false}
       />
-
-      <></>
     </BaseDiv>
   );
 };
 
 export default CollectionPage;
 
-const BaseDiv = styled.div`
+const BaseDiv = styled(IonPage)`
   display: flex;
   flex-direction: column;
   align-items: center;
