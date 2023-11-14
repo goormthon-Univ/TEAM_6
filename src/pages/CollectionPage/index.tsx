@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CloudCircleFrame from "../../components/CloudCircleFrame";
 import Cloud02 from "../../assets/cloudimages/Cloud02";
 import { Cloud01 } from "../../assets/cloudimages/Cloud01";
-import { IonButton } from "@ionic/react";
+import { IonButton, IonPage } from "@ionic/react";
 import BookMark from "../../assets/collection/BookMark";
 import CollectionModal from "../../components/CollectionModal";
 import Caution from "../../assets/collection/Caution";
@@ -48,9 +48,10 @@ const CollectionPage = () => {
         openId="cloud"
         title="구름"
         GoalList={[
-          { imgId: "1", name: "구름 No.1" },
-          { imgId: "1", name: "구름 No.2" },
-          { imgId: "2", name: "구름 No.3" },
+          { imgId: "5", name: "구름 No.1" },
+          { imgId: "6", name: "구름 No.2" },
+          { imgId: "7", name: "구름 No.3" },
+          { imgId: "8", name: "구름 No.4" },
         ]}
       />
       <CollectionModal
@@ -60,31 +61,27 @@ const CollectionPage = () => {
         GoalList={[
           { imgId: "1", name: "미니 구름 No.1" },
           { imgId: "2", name: "미니 구름 No.2" },
+          { imgId: "3", name: "미니 구름 No.3" },
+          { imgId: "4", name: "미니 구름 No.4" },
         ]}
       />
       <CollectionCautionModal
         modal={CloudCautionModal}
         openId="cloudCaution"
-        title="구름 컬렉션"
-        content="구름 컬렉션은 1년 목표를 
-        달성하면 받는 완성 구름이에요!"
+        type={true}
       />
       <CollectionCautionModal
         modal={miniCloudCautionModal}
         openId="miniCloudCaution"
-        title="미니 구름 컬렉션"
-        content="미니 구름은 한 달 동안 지속해서 수증기 4개를
-        모으면 받는 구름을 말해요!"
+        type={false}
       />
-
-      <></>
     </BaseDiv>
   );
 };
 
 export default CollectionPage;
 
-const BaseDiv = styled.div`
+const BaseDiv = styled(IonPage)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,15 +104,15 @@ const CollectionTopDiv = styled.div`
   border-bottom: 2px solid #ffdeda;
   position: relative;
   &::after {
-    content: "컬렉션"; /* 추가할 텍스트 */
-    position: absolute; /* 부모 요소에 상대적으로 위치 */
-    bottom: -0.8rem; /* border-bottom 아래에 위치하도록 조정 */
+    content: "컬렉션";
+    position: absolute;
+    bottom: -0.8rem;
     font-size: 1.1rem;
-    left: 50%; /* 왼쪽에서 50%의 위치 */
+    left: 50%;
 
-    transform: translateX(-50%); /* 정 중앙에 오도록 조정 */
-    background-color: white; /* 배경색 지정 */
-    padding: 0 10px; /* 텍스트 양 옆의 여백 */
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 0 10px;
   }
 `;
 
@@ -182,7 +179,7 @@ const CollectionButton = styled(IonButton)`
   width: 9rem;
 
   border: 0;
-  border-radius: 10px;
+  --border-radius: 0.5rem;
 
   position: relative;
 `;

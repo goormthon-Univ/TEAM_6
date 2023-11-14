@@ -1,8 +1,8 @@
 import { IonButton } from "@ionic/react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ProfileAlertModar from "./ProfileAlertModar";
 import ProfileEditModar from "./ProfileEditModar";
+import ProfileDeleteModar from "./ProfileDeleteModar";
 
 interface ProfileOngoingGoalBarProps {
   id: string;
@@ -17,6 +17,7 @@ const ProfileOngoingGoalBar = ({
   percentageValue,
   period,
 }: ProfileOngoingGoalBarProps) => {
+  const [isEdit, setIsEdit] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const editGoalModal = useRef<HTMLIonModalElement>(null);
   const deleteGoalModal = useRef<HTMLIonModalElement>(null);
@@ -26,6 +27,25 @@ const ProfileOngoingGoalBar = ({
       setPercentageValue.style.width = percentageValue;
     }
   }, []);
+
+  const handleSubmitWeekGoal = () => {
+    console.log("수정 완료");
+  };
+
+  const handleDeleteGoal = () => {
+    console.log("삭제 완료");
+  };
+
+  const handleIsEdit = () => {
+    setIsEdit(true);
+  };
+  const dismissEditGoalModar = () => {
+    editGoalModal.current?.dismiss();
+  };
+  const dismissDeleteGoalModal = () => {
+    deleteGoalModal.current?.dismiss();
+  };
+
   return (
     <BaseDiv>
       <GoalTitle>
@@ -44,7 +64,11 @@ const ProfileOngoingGoalBar = ({
         <ParameterSpan>100%</ParameterSpan>
       </GoalParameterBox>
       <GoalBtnContainer>
-        <GoalCancleButton id={`editGoal${id}`} size="small">
+        <GoalCancleButton
+          id={`editGoal${id}`}
+          size="small"
+          onClick={() => setIsEdit(false)}
+        >
           고정 주 목표 해지
         </GoalCancleButton>
         <SpaceSpan />
@@ -54,20 +78,19 @@ const ProfileOngoingGoalBar = ({
         </GoalDeleteButton>
       </GoalBtnContainer>
 
-      <ProfileAlertModar
+      <ProfileEditModar
         modal={editGoalModal}
         openId={`editGoal${id}`}
-        content="고정 주 목표를 수정하시겠습니까?"
+        isEdit={isEdit}
+        handleSubmit={handleSubmitWeekGoal}
+        handleIsEdit={handleIsEdit}
+        dismiss={dismissEditGoalModar}
       />
-      <ProfileAlertModar
+      <ProfileDeleteModar
         modal={deleteGoalModal}
         openId={`deleteGoal${id}`}
-        content="정말 목표를 삭제하시겠습니까?"
-      />
-      <ProfileEditModar
-        modal={deleteGoalModal}
-        openId={`editGoal${id}`}
-        editGoalId={id}
+        handle={handleDeleteGoal}
+        dismiss={dismissDeleteGoalModal}
       />
     </BaseDiv>
   );

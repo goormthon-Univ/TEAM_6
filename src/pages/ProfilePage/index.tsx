@@ -6,47 +6,50 @@ import { Chart } from "../../assets/profile/Chart";
 import ProfileOngoingGoalBar from "../../components/ProfileOngoingGoalBar";
 import ProfileCompletedGoalBar from "../../components/ProfileCompletedGoalBar";
 import Checked from "../../assets/profile/Checked";
+import { IonContent, IonPage } from "@ionic/react";
 
 const ProfilePage = () => {
   return (
     <BaseDiv>
-      <UserInfoTopDiv>
-        <CloudCircleFrame CloudImg={Cloud01} />
-        <StyledTextName>구르미</StyledTextName>
-      </UserInfoTopDiv>
-      <UserInfoMiddleDiv>
-        <OngoingGoalTitleBox>
-          <Chart />
-          <SpaceSpan />
-          진행중인 목표
-        </OngoingGoalTitleBox>
-        <OngoingGoalBox>
-          <ProfileOngoingGoalBar
-            id="1"
-            goal="10kg 다이어트"
-            percentageValue="40%"
-            period="1년"
-          />
-        </OngoingGoalBox>
-        <OngoingGoalBox>
-          <ProfileOngoingGoalBar
-            id="2"
-            goal="디자인 완성"
-            percentageValue="80%"
-            period="1개월"
-          />
-        </OngoingGoalBox>
-      </UserInfoMiddleDiv>
-      <UserInfoBottomDiv>
-        <CompletedGoalTitleBox>
-          <Checked />
-          <SpaceSpan />
-          달성한 목표
-        </CompletedGoalTitleBox>
-        <CompletedGoalBox>
-          <ProfileCompletedGoalBar goal="7kg 다이어트" period="1년" />
-        </CompletedGoalBox>
-      </UserInfoBottomDiv>
+      <ContentBaseDiv>
+        <UserInfoTopDiv>
+          <CloudCircleFrame CloudImg={Cloud01} />
+          <StyledTextName>구르미</StyledTextName>
+        </UserInfoTopDiv>
+        <UserInfoMiddleDiv>
+          <OngoingGoalTitleBox>
+            <Chart />
+            <SpaceSpan />
+            진행중인 목표
+          </OngoingGoalTitleBox>
+          <OngoingGoalBox>
+            <ProfileOngoingGoalBar
+              id="1"
+              goal="10kg 다이어트"
+              percentageValue="40%"
+              period="1년"
+            />
+          </OngoingGoalBox>
+          <OngoingGoalBox>
+            <ProfileOngoingGoalBar
+              id="2"
+              goal="디자인 완성"
+              percentageValue="80%"
+              period="1개월"
+            />
+          </OngoingGoalBox>
+        </UserInfoMiddleDiv>
+        <UserInfoBottomDiv>
+          <CompletedGoalTitleBox>
+            <Checked />
+            <SpaceSpan />
+            달성한 목표
+          </CompletedGoalTitleBox>
+          <CompletedGoalBox>
+            <ProfileCompletedGoalBar goal="7kg 다이어트" period="1년" />
+          </CompletedGoalBox>
+        </UserInfoBottomDiv>
+      </ContentBaseDiv>
     </BaseDiv>
   );
 };
@@ -69,12 +72,18 @@ const UserInfoTopDiv = styled.div`
   border-bottom: 1px solid #9c9c9c;
 `;
 
-const BaseDiv = styled.div`
+const BaseDiv = styled(IonPage)`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   height: 100%;
+`;
+
+const ContentBaseDiv = styled(IonContent)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StyledTextName = styled.div`
