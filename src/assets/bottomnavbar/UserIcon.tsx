@@ -1,3 +1,4 @@
+import React from "react";
 import { BottomNavbarIcon } from "../../types/BottomNavbarIcon";
 
 export const UserIcon = ({ isSelected }: BottomNavbarIcon) => {

@@ -1,3 +1,4 @@
+import React from "react";
 import { IonModal } from "@ionic/react";
 import { RefObject } from "react";
 import styled from "styled-components";

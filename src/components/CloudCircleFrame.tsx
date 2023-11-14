@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { Cloud01 } from "../assets/cloudimages/Cloud01";
 import Cloud02 from "../assets/cloudimages/Cloud02";

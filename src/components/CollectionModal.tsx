@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IonContent,
   IonInfiniteScroll,
@@ -33,7 +34,7 @@ const CollectionModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getMoreCloud = () => {
-    const newItems = [];
+    const newItems: string[] = [];
     for (let i = 0; i < 30; i++) {
       newItems.push(`Cloud ${1 + items.length + i}`);
     }
