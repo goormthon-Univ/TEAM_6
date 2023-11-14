@@ -39,8 +39,11 @@ const ProfileOngoingGoalBar = ({
   const handleIsEdit = () => {
     setIsEdit(true);
   };
-  const dismissEditWeekModar = () => {
+  const dismissEditGoalModar = () => {
     editGoalModal.current?.dismiss();
+  };
+  const dismissDeleteGoalModal = () => {
+    deleteGoalModal.current?.dismiss();
   };
 
   return (
@@ -81,12 +84,13 @@ const ProfileOngoingGoalBar = ({
         isEdit={isEdit}
         handleSubmit={handleSubmitWeekGoal}
         handleIsEdit={handleIsEdit}
-        dismiss={dismissEditWeekModar}
+        dismiss={dismissEditGoalModar}
       />
       <ProfileDeleteModar
         modal={deleteGoalModal}
         openId={`deleteGoal${id}`}
         handle={handleDeleteGoal}
+        dismiss={dismissDeleteGoalModal}
       />
     </BaseDiv>
   );
