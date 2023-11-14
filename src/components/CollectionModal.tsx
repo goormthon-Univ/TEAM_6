@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IonContent,
   IonInfiniteScroll,
@@ -5,7 +6,7 @@ import {
   IonList,
   IonModal,
 } from "@ionic/react";
-import React, { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import styled from "styled-components";
 import DownArrow from "../assets/collection/DownArrow";
 import CollectionCloudCard from "./CollectionCloudCard";
@@ -33,7 +34,7 @@ const CollectionModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getMoreCloud = () => {
-    const newItems = [];
+    const newItems: string[] = [];
     for (let i = 0; i < 30; i++) {
       newItems.push(`Cloud ${1 + items.length + i}`);
     }

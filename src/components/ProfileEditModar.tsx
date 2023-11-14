@@ -1,5 +1,6 @@
-import { IonButton, IonContent, IonInput, IonModal } from "@ionic/react";
-import React, { RefObject, useEffect, useState } from "react";
+import React from "react";
+import { IonButton, IonInput, IonModal } from "@ionic/react";
+import { RefObject } from "react";
 import styled from "styled-components";
 import CautionRed from "../assets/collection/CautionRed";
 
@@ -20,6 +21,16 @@ const ProfileEditModar = ({
   handleIsEdit,
   dismiss,
 }: ProfileEditModarProps) => {
+  // const [dailyPlanElement, setDailyPlanElement] = useState<DailyPlanElement>({
+  //   Mon: "~~~가 목표임",
+  //   Tue: "~~~가 목표임",
+  //   Wed: "~~~가 목표임",
+  //   Thu: "~~~가 목표임",
+  //   Fri: "~~~가 목표임",
+  //   Sat: "~~~가 목표임",
+  //   Sun: "~~~가 목표임",
+  // });
+  // const getDailyPlanElement = async () => {};
   return (
     <StyledIonModal ref={modal} trigger={openId}>
       {isEdit ? (

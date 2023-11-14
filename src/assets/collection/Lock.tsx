@@ -1,5 +1,4 @@
 import React from "react";
-
 const Lock = () => {
   return (
     <svg

@@ -1,5 +1,6 @@
+import React from "react";
 import { IonButton, IonModal } from "@ionic/react";
-import React, { RefObject, useEffect, useState } from "react";
+import { RefObject } from "react";
 import styled from "styled-components";
 import CautionRed from "../assets/collection/CautionRed";
 

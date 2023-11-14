@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import CloudCircleFrame from "../../components/CloudCircleFrame";
 import styled from "styled-components";
 import { Cloud01 } from "../../assets/cloudimages/Cloud01";
@@ -7,8 +8,76 @@ import ProfileOngoingGoalBar from "../../components/ProfileOngoingGoalBar";
 import ProfileCompletedGoalBar from "../../components/ProfileCompletedGoalBar";
 import Checked from "../../assets/profile/Checked";
 import { IonContent, IonPage } from "@ionic/react";
+import { customAxios } from "../../lib/customAxios";
+import { DoingPlan } from "../../types/DoingPlan";
+import { DonePlan } from "../../types/DonePlan";
 
 const ProfilePage = () => {
+  const [doingPlan, setDoingPlan] = useState<DoingPlan>({
+    yearPlans: [
+      {
+        yearPlanId: 24,
+        yearPlan: "책 10권 읽기!!",
+        miniCloud: 0,
+        yearPlanSteam: 27,
+        yearPlanDone: false,
+      },
+      {
+        yearPlanId: 25,
+        yearPlan: "물 많이 마시기",
+        miniCloud: 0,
+        yearPlanSteam: 32,
+        yearPlanDone: false,
+      },
+    ],
+    shortPlans: [
+      {
+        shortPlanId: 4,
+        shortPlan: "다이어트 -5kg 빼기",
+        period: 3,
+        miniCloud: 0,
+        steam: 6,
+        done: false,
+      },
+    ],
+  });
+  const [donePlan, setDonePlan] = useState<DonePlan>({
+    done_plan: [
+      {
+        year_plan_id: 4,
+        YearPlan: "책 5권 읽기",
+        steam: 52, //수증기 개수
+        done: true,
+      },
+      {
+        year_plan_id: 4,
+        YearPlan: "꽃 심기",
+        steam: 52,
+        done: true,
+      },
+    ],
+  });
+  // 진행중 목록 가져오기
+  const getDoingPlans = async () => {
+    await customAxios.get("/DoingPlan").then((res) => {
+      setDoingPlan(res.data);
+      // console.log("DoingPlans: ");
+      // console.log(res.data);
+    });
+  };
+  // 완료 목록 가져오기
+  const getDonePlans = async () => {
+    await customAxios.get("/DonePlan").then((res) => {
+      setDonePlan(res.data);
+      // console.log("DonePlans: ");
+      // console.log(res.data.done_plan);
+    });
+  };
+  useEffect(() => {
+    getDoingPlans();
+    getDonePlans();
+  }, []);
+
   return (
     <BaseDiv>
       <ContentBaseDiv>
@@ -22,22 +91,38 @@ const ProfilePage = () => {
             <SpaceSpan />
             진행중인 목표
           </OngoingGoalTitleBox>
-          <OngoingGoalBox>
-            <ProfileOngoingGoalBar
-              id="1"
-              goal="10kg 다이어트"
-              percentageValue="40%"
-              period="1년"
-            />
-          </OngoingGoalBox>
-          <OngoingGoalBox>
-            <ProfileOngoingGoalBar
-              id="2"
-              goal="디자인 완성"
-              percentageValue="80%"
-              period="1개월"
-            />
-          </OngoingGoalBox>
+          {doingPlan?.yearPlans ? (
+            doingPlan.yearPlans.map((plan) => (
+              <OngoingGoalBox key={plan.yearPlanId}>
+                <ProfileOngoingGoalBar
+                  id={String(plan.yearPlanId)}
+                  goal={plan.yearPlan}
+                  percentageValue={
+                    String((100 * plan.yearPlanSteam) / 52) + "%"
+                  }
+                  period="1년"
+                />
+              </OngoingGoalBox>
+            ))
+          ) : (
+            <></>
+          )}
+          {doingPlan?.shortPlans ? (
+            doingPlan.shortPlans.map((plan) => (
+              <OngoingGoalBox key={plan.shortPlanId}>
+                <ProfileOngoingGoalBar
+                  id={String(plan.shortPlanId)}
+                  goal={plan.shortPlan}
+                  percentageValue={
+                    String((100 * plan.steam) / (plan.period * 4)) + "%"
+                  }
+                  period={String(plan.period) + "개월"}
+                />
+              </OngoingGoalBox>
+            ))
+          ) : (
+            <></>
+          )}
         </UserInfoMiddleDiv>
         <UserInfoBottomDiv>
           <CompletedGoalTitleBox>
@@ -45,9 +130,15 @@ const ProfilePage = () => {
             <SpaceSpan />
             달성한 목표
           </CompletedGoalTitleBox>
-          <CompletedGoalBox>
-            <ProfileCompletedGoalBar goal="7kg 다이어트" period="1년" />
-          </CompletedGoalBox>
+          {donePlan?.done_plan ? (
+            donePlan.done_plan.map((plan) => (
+              <CompletedGoalBox key={plan.year_plan_id}>
+                <ProfileCompletedGoalBar goal={plan.YearPlan} period="1년" />
+              </CompletedGoalBox>
+            ))
+          ) : (
+            <></>
+          )}
         </UserInfoBottomDiv>
       </ContentBaseDiv>
     </BaseDiv>

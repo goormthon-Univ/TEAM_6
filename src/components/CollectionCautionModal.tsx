@@ -1,5 +1,6 @@
+import React from "react";
 import { IonModal } from "@ionic/react";
-import React, { RefObject } from "react";
+import { RefObject } from "react";
 import styled from "styled-components";
 import CautionRed from "../assets/collection/CautionRed";
 
