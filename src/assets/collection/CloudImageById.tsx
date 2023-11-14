@@ -73,8 +73,8 @@ const CloudImageById = ({ imgId = "" }: CloudImageByIdProps) => {
             y2="46"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FFB8AE" />
-            <stop offset="1" stop-color="#FFE4AE" />
+            <stop stopColor="#FFB8AE" />
+            <stop offset="1" stopColor="#FFE4AE" />
           </linearGradient>
         </defs>
       </svg>
@@ -154,8 +154,8 @@ const CloudImageById = ({ imgId = "" }: CloudImageByIdProps) => {
             y2="41.0002"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FFB8AE" />
-            <stop offset="1" stop-color="#FFE4AE" />
+            <stop stopColor="#FFB8AE" />
+            <stop offset="1" stopColor="#FFE4AE" />
           </linearGradient>
         </defs>
       </svg>
