@@ -1,8 +1,8 @@
 export interface DailyPlan {
-  dailyPlan: DailyPlan[];
+  dailyPlan: DailyPlanElement[];
 }
 
-export interface DailyPlan {
+export interface DailyPlanElement {
   Mon: string;
   Tue: string;
   Wed: string;

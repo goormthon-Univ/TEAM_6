@@ -67,11 +67,13 @@ const ProfilePage = () => {
     await customAxios
       .get("/DoingPlan")
       .then((res) => {
-        setDoingPlan(res.data);
+        console.log(window.location.hostname);
         console.log("DoingPlans: ");
         console.log(res.data);
+        setDoingPlan(res.data);
       })
       .catch((error) => {
+        console.log(window.location.hostname);
         console.log("진행 목록 가져오기 실패");
         console.log(error);
       });
@@ -81,11 +83,13 @@ const ProfilePage = () => {
     await customAxios
       .get("/DonePlan")
       .then((res) => {
-        setDonePlan(res.data);
+        console.log(window.location.hostname);
         console.log("DonePlans: ");
         console.log(res.data);
+        setDonePlan(res.data);
       })
       .catch((error) => {
+        console.log(window.location.hostname);
         console.log("완료 목록 가져오기 실패");
         console.log(error);
       });
