@@ -10,16 +10,14 @@ import { RefObject, useEffect, useState } from "react";
 import styled from "styled-components";
 import DownArrow from "../assets/collection/DownArrow";
 import CollectionCloudCard from "./CollectionCloudCard";
+import { Cloud } from "../types/CloudList";
 
 interface CollectionModalProps {
   modal: RefObject<HTMLIonModalElement>;
   openId: string;
   title: string;
-  GoalList: Goal[];
-}
-interface Goal {
-  imgId: string;
-  name: string;
+  GoalList: Cloud[];
+  type: string;
 }
 
 const CollectionModal = ({
@@ -27,6 +25,7 @@ const CollectionModal = ({
   openId,
   title,
   GoalList,
+  type,
 }: CollectionModalProps) => {
   const [items, setItems] = useState<string[]>([]);
   useEffect(() => {
@@ -58,8 +57,16 @@ const CollectionModal = ({
           <IonList>
             <ModalContentBox>
               {GoalList ? (
-                GoalList.map(({ imgId, name }, index) => (
-                  <CollectionCloudCard imgId={imgId} name={name} key={index} />
+                GoalList.map(({ imageNum, cloudId }, index) => (
+                  <CollectionCloudCard
+                    imgId={imageNum}
+                    name={
+                      type === "cloud"
+                        ? "구름 No." + cloudId
+                        : "미니 구름 No." + cloudId
+                    }
+                    key={index}
+                  />
                 ))
               ) : (
                 <></>

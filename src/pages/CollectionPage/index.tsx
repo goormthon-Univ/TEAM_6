@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import CloudCircleFrame from "../../components/CloudCircleFrame";
@@ -9,13 +9,48 @@ import BookMark from "../../assets/collection/BookMark";
 import CollectionModal from "../../components/CollectionModal";
 import Caution from "../../assets/collection/Caution";
 import CollectionCautionModal from "../../components/CollectionCautionModal";
+import { customAxios } from "../../lib/customAxios";
+import { CloudList } from "../../types/CloudList";
 
 const CollectionPage = () => {
+  const [miniCloudList, setMiniCloudList] = useState<CloudList>({
+    clouds: [
+      { imageNum: "5", cloudId: "1" },
+      { imageNum: "6", cloudId: "2" },
+      { imageNum: "7", cloudId: "3" },
+      { imageNum: "8", cloudId: "4" },
+    ],
+  });
+  const [cloudList, setCloudList] = useState<CloudList>({
+    clouds: [
+      { imageNum: "5", cloudId: "1" },
+      { imageNum: "6", cloudId: "2" },
+      { imageNum: "7", cloudId: "3" },
+      { imageNum: "8", cloudId: "4" },
+    ],
+  });
   const miniCloudModal = useRef<HTMLIonModalElement>(null);
   const CloudModal = useRef<HTMLIonModalElement>(null);
 
   const miniCloudCautionModal = useRef<HTMLIonModalElement>(null);
   const CloudCautionModal = useRef<HTMLIonModalElement>(null);
+
+  const getCloudList = async () => {
+    await customAxios.get("/collection?type=2").then((res) => {
+      console.log("미니구름 컬렉션");
+      console.log(res.data);
+      setMiniCloudList(res.data);
+    });
+    await customAxios.get("/collection?type=3").then((res) => {
+      console.log("구름 컬렉션");
+      console.log(res.data);
+      setCloudList(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getCloudList();
+  }, []);
 
   return (
     <BaseDiv>
@@ -48,23 +83,15 @@ const CollectionPage = () => {
         modal={CloudModal}
         openId="cloud"
         title="구름"
-        GoalList={[
-          { imgId: "5", name: "구름 No.1" },
-          { imgId: "6", name: "구름 No.2" },
-          { imgId: "7", name: "구름 No.3" },
-          { imgId: "8", name: "구름 No.4" },
-        ]}
+        GoalList={cloudList?.clouds}
+        type="cloud"
       />
       <CollectionModal
         modal={miniCloudModal}
         openId="miniCloud"
         title="미니 구름"
-        GoalList={[
-          { imgId: "1", name: "미니 구름 No.1" },
-          { imgId: "2", name: "미니 구름 No.2" },
-          { imgId: "3", name: "미니 구름 No.3" },
-          { imgId: "4", name: "미니 구름 No.4" },
-        ]}
+        GoalList={miniCloudList?.clouds}
+        type="miniCloud"
       />
       <CollectionCautionModal
         modal={CloudCautionModal}
