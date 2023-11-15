@@ -64,19 +64,31 @@ const ProfilePage = () => {
   });
   // 진행중 목록 가져오기
   const getDoingPlans = async () => {
-    await customAxios.get("/DoingPlan").then((res) => {
-      setDoingPlan(res.data);
-      console.log("DoingPlans: ");
-      console.log(res.data);
-    });
+    await customAxios
+      .get("/DoingPlan")
+      .then((res) => {
+        setDoingPlan(res.data);
+        console.log("DoingPlans: ");
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log("진행 목록 가져오기 실패");
+        console.log(error);
+      });
   };
   // 완료 목록 가져오기
   const getDonePlans = async () => {
-    await customAxios.get("/DonePlan").then((res) => {
-      setDonePlan(res.data);
-      console.log("DonePlans: ");
-      console.log(res.data);
-    });
+    await customAxios
+      .get("/DonePlan")
+      .then((res) => {
+        setDonePlan(res.data);
+        console.log("DonePlans: ");
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log("완료 목록 가져오기 실패");
+        console.log(error);
+      });
   };
   useEffect(() => {
     getDoingPlans();

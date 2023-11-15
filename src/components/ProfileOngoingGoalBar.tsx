@@ -44,7 +44,10 @@ const ProfileOngoingGoalBar = ({
           console.log("단기 목표 삭제 성공");
           console.log(res);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log("단기 목표 삭제 실패");
+          console.log(error);
+        });
     } else if (type === "year") {
       await customAxios
         .delete("/DoingPlan", { data: { yearPlanId: id } })
@@ -52,10 +55,11 @@ const ProfileOngoingGoalBar = ({
           console.log("장기 목표 삭제 성공");
           console.log(res);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log("장기 목표 삭제 실패");
+          console.log(error);
+        });
     }
-
-    console.log("삭제 종료");
   };
 
   const handleIsEdit = () => {
