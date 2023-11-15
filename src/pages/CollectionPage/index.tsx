@@ -36,16 +36,28 @@ const CollectionPage = () => {
   const CloudCautionModal = useRef<HTMLIonModalElement>(null);
 
   const getCloudList = async () => {
-    await customAxios.get("/collection?type=2").then((res) => {
-      console.log("미니구름 컬렉션");
-      console.log(res.data);
-      setMiniCloudList(res.data);
-    });
-    await customAxios.get("/collection?type=3").then((res) => {
-      console.log("구름 컬렉션");
-      console.log(res.data);
-      setCloudList(res.data);
-    });
+    await customAxios
+      .get("/collection?type=2")
+      .then((res) => {
+        console.log("미니구름 컬렉션");
+        console.log(res.data);
+        setMiniCloudList(res.data);
+      })
+      .catch((error) => {
+        console.log("미니 구름 컬렉션 가져오기 실패");
+        console.log(error);
+      });
+    await customAxios
+      .get("/collection?type=3")
+      .then((res) => {
+        console.log("구름 컬렉션");
+        console.log(res.data);
+        setCloudList(res.data);
+      })
+      .catch((error) => {
+        console.log("구름 컬렉션 가져오기 실패");
+        console.log(error);
+      });
   };
 
   useEffect(() => {
