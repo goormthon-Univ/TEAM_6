@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ProfileEditModar from "./ProfileEditModar";
 import ProfileDeleteModar from "./ProfileDeleteModar";
+import { customAxios } from "../lib/customAxios";
 
 interface ProfileOngoingGoalBarProps {
   id: string;
   goal: string;
   percentageValue: string;
   period: string;
+  type: string;
 }
 
 const ProfileOngoingGoalBar = ({
@@ -17,6 +19,7 @@ const ProfileOngoingGoalBar = ({
   goal,
   percentageValue,
   period,
+  type,
 }: ProfileOngoingGoalBarProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -33,8 +36,26 @@ const ProfileOngoingGoalBar = ({
     console.log("수정 완료");
   };
 
-  const handleDeleteGoal = () => {
-    console.log("삭제 완료");
+  const handleDeleteGoal = async () => {
+    if (type === "short") {
+      await customAxios
+        .delete("/DoingPlan", { data: { shortPlanId: id } })
+        .then((res) => {
+          console.log("단기 목표 삭제 성공");
+          console.log(res);
+        })
+        .catch((error) => console.log(error));
+    } else if (type === "year") {
+      await customAxios
+        .delete("/DoingPlan", { data: { yearPlanId: id } })
+        .then((res) => {
+          console.log("장기 목표 삭제 성공");
+          console.log(res);
+        })
+        .catch((error) => console.log(error));
+    }
+
+    console.log("삭제 종료");
   };
 
   const handleIsEdit = () => {
