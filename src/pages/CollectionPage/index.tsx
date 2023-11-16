@@ -196,26 +196,22 @@ const CollectionBtnBox = styled.div`
 
 const CollectionButton = styled(IonButton)`
   margin-top: 0.5rem;
+  --padding-top: 0.8rem;
+  --padding-bottom: 0.8rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* --ion-color-primary: #f1f1f1; */
-  /* --ion-color-primary-shade: #ffb8ae; */
   --color: #595959;
-  /* --color-focused: #ffffff; */
   --color-activated: #ffffff;
-  /* --color-hover: #ffffff; */
-  /* background-color: #f1f1f1; */
   font-size: 0.8rem;
-  /* color: #595959; */
 
   --background: #f1f1f1;
   --background-activated: #ffb8ae;
   --background-focused: #ffb8ae;
+  --box-shadow: none;
 
-  height: 1rem;
   width: 9rem;
 
   border: 0;

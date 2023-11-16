@@ -106,7 +106,7 @@ const ProfilePage = () => {
             <></>
           )}
           {doingPlan?.yearPlans.length + doingPlan?.shortPlans.length === 0 ? (
-            <div>아무것도 없음</div>
+            <EmptyGoalBox>아직 진행 중인 목표가 없습니다</EmptyGoalBox>
           ) : (
             <></>
           )}
@@ -139,7 +139,7 @@ const ProfilePage = () => {
             <></>
           )}
           {donePlan?.yearPlans.length + donePlan?.shortPlans.length === 0 ? (
-            <div>아무것도 없음</div>
+            <EmptyGoalBox>아직 달성한 목표가 없습니다</EmptyGoalBox>
           ) : (
             <></>
           )}
@@ -279,4 +279,16 @@ const CompletedGoalBox = styled.div`
 
   height: 5.5rem;
   width: 80%;
+`;
+
+const EmptyGoalBox = styled.div`
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: 90%;
 `;
