@@ -19,7 +19,7 @@ import YearlyInput from "../../components/mainComponents/YearlyInput";
 import CancelConfirmBtn from "../../components/mainComponents/CancelConfirmBtn";
 
 const MainPage = () => {
-  const [isObjectExist, setIsObjectExist] = React.useState(false);
+  const [isObjectExist, setIsObjectExist] = React.useState(true);
   const [isEditing, setIsEditing] = React.useState(true);
   const [isYearly, setIsYearly] = React.useState(false);
 
