@@ -1,13 +1,8 @@
 export interface DailyPlan {
-  dailyPlan: DailyPlanElement[];
+  dailyPlans: DailyPlanElement[];
 }
 
 export interface DailyPlanElement {
-  Mon: string;
-  Tue: string;
-  Wed: string;
-  Thu: string;
-  Fri: string;
-  Sat: string;
-  Sun: string;
+  day: string;
+  plan: string;
 }
