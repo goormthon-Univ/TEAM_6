@@ -13,6 +13,7 @@ interface ProfileOngoingGoalBarProps {
   percentageValue: string;
   period: string;
   type: string;
+  tempId: string;
 }
 
 const ProfileOngoingGoalBar = ({
@@ -21,6 +22,7 @@ const ProfileOngoingGoalBar = ({
   percentageValue,
   period,
   type,
+  tempId,
 }: ProfileOngoingGoalBarProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -107,7 +109,7 @@ const ProfileOngoingGoalBar = ({
     <BaseDiv>
       <GoalTitle>
         <GoalSmallBox>
-          <DescriptionBox>목표{id}</DescriptionBox>
+          <DescriptionBox>목표{tempId}</DescriptionBox>
           <SpaceSpan />
           {goal}
         </GoalSmallBox>
@@ -122,7 +124,7 @@ const ProfileOngoingGoalBar = ({
       </GoalParameterBox>
       <GoalBtnContainer>
         <GoalCancleButton
-          id={`editGoal${id}`}
+          id={`editGoal${id}${type}`}
           size="small"
           onClick={() => setIsEdit(false)}
         >
@@ -130,14 +132,14 @@ const ProfileOngoingGoalBar = ({
         </GoalCancleButton>
         <SpaceSpan />
         <SpaceSpan />
-        <GoalDeleteButton id={`deleteGoal${id}`} size="small">
+        <GoalDeleteButton id={`deleteGoal${id}${type}`} size="small">
           목표 삭제
         </GoalDeleteButton>
       </GoalBtnContainer>
 
       <ProfileEditModar
         modal={editGoalModal}
-        openId={`editGoal${id}`}
+        openId={`editGoal${id}${type}`}
         isEdit={isEdit}
         handleSubmit={handleSubmitWeekGoal}
         handleIsEdit={handleIsEdit}
@@ -147,7 +149,7 @@ const ProfileOngoingGoalBar = ({
       />
       <ProfileDeleteModar
         modal={deleteGoalModal}
-        openId={`deleteGoal${id}`}
+        openId={`deleteGoal${id}${type}`}
         handle={handleDeleteGoal}
         dismiss={dismissDeleteGoalModal}
       />
