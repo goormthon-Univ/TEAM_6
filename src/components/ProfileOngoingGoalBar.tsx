@@ -259,6 +259,7 @@ const GoalCancleButton = styled(IonButton)`
   --background: #f1f1f1;
   --background-activated: #ffb8ae;
   --background-focused: #ffb8ae;
+  --box-shadow: none;
 
   height: 0.7rem;
 
@@ -277,6 +278,7 @@ const GoalDeleteButton = styled(IonButton)`
   --background: #9c9c9cf1;
   --background-activated: #5c5c5c;
   --background-focused: #5c5c5c;
+  --box-shadow: none;
 
   height: 1.2rem;
 
