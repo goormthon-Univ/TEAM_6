@@ -15,18 +15,18 @@ import { CloudList } from "../../types/CloudList";
 const CollectionPage = () => {
   const [miniCloudList, setMiniCloudList] = useState<CloudList>({
     clouds: [
-      { imageNum: "5", cloudId: "1" },
-      { imageNum: "6", cloudId: "2" },
-      { imageNum: "7", cloudId: "3" },
-      { imageNum: "8", cloudId: "4" },
+      { image_num: 1, cloud_id: 1 },
+      { image_num: 2, cloud_id: 2 },
+      { image_num: 3, cloud_id: 3 },
+      { image_num: 4, cloud_id: 4 },
     ],
   });
   const [cloudList, setCloudList] = useState<CloudList>({
     clouds: [
-      { imageNum: "5", cloudId: "1" },
-      { imageNum: "6", cloudId: "2" },
-      { imageNum: "7", cloudId: "3" },
-      { imageNum: "8", cloudId: "4" },
+      { image_num: 5, cloud_id: 1 },
+      { image_num: 6, cloud_id: 2 },
+      { image_num: 7, cloud_id: 3 },
+      { image_num: 8, cloud_id: 4 },
     ],
   });
   const miniCloudModal = useRef<HTMLIonModalElement>(null);
