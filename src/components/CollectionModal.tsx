@@ -57,13 +57,13 @@ const CollectionModal = ({
           <IonList>
             <ModalContentBox>
               {GoalList ? (
-                GoalList.map(({ imageNum, cloudId }, index) => (
+                GoalList.map(({ image_num, cloud_id }, index) => (
                   <CollectionCloudCard
-                    imgId={imageNum}
+                    imgId={image_num}
                     name={
                       type === "cloud"
-                        ? "구름 No." + cloudId
-                        : "미니 구름 No." + cloudId
+                        ? "구름 No." + cloud_id
+                        : "미니 구름 No." + cloud_id
                     }
                     key={index}
                   />
@@ -73,7 +73,7 @@ const CollectionModal = ({
               )}
               {items ? (
                 items.map((name, index) => (
-                  <CollectionCloudCard imgId="" name={name} key={index} />
+                  <CollectionCloudCard imgId={0} name={name} key={index} />
                 ))
               ) : (
                 <></>

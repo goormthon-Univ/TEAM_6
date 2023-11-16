@@ -4,19 +4,20 @@ import Lock from "../assets/collection/Lock";
 import CloudImageById from "../assets/collection/CloudImageById";
 
 interface CollectionCloudCardProps {
-  imgId: string;
+  imgId: number;
   name: string;
 }
 
 const CollectionCloudCard = ({
-  imgId = "",
+  imgId = 0,
   name = "",
 }: CollectionCloudCardProps) => {
   return (
     <BaseDiv>
-      {imgId !== "" ? (
+      {imgId !== 0 ? (
         <CollectionImageBox>
-          <CloudImageById imgId={imgId} />
+          <CloudImageById imgId={String(imgId)} />
+          <br />
           {name}
         </CollectionImageBox>
       ) : (

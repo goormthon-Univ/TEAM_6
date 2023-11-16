@@ -14,53 +14,12 @@ import { DonePlan } from "../../types/DonePlan";
 
 const ProfilePage = () => {
   const [doingPlan, setDoingPlan] = useState<DoingPlan>({
-    yearPlans: [
-      {
-        yearPlanId: 24,
-        yearPlan: "책 10권 읽기!!",
-        miniCloud: 0,
-        yearPlanSteam: 27,
-        yearPlanDone: false,
-      },
-      {
-        yearPlanId: 25,
-        yearPlan: "물 많이 마시기",
-        miniCloud: 0,
-        yearPlanSteam: 32,
-        yearPlanDone: false,
-      },
-    ],
-    shortPlans: [
-      {
-        shortPlanId: 4,
-        shortPlan: "다이어트 -5kg 빼기",
-        period: 3,
-        miniCloud: 0,
-        steam: 6,
-        done: false,
-      },
-    ],
+    yearPlans: [],
+    shortPlans: [],
   });
   const [donePlan, setDonePlan] = useState<DonePlan>({
-    yearPlans: [
-      {
-        yearPlanId: 25,
-        yearPlan: "물 많이 마시기",
-        miniCloud: 0,
-        yearPlanSteam: 0,
-        yearPlanDone: true,
-      },
-    ],
-    shortPlans: [
-      {
-        shortPlanId: 4,
-        shortPlan: "다이어트 -5kg 빼기",
-        period: 3,
-        miniCloud: 0,
-        steam: 4,
-        done: true,
-      },
-    ],
+    yearPlans: [],
+    shortPlans: [],
   });
   // 진행중 목록 가져오기
   const getDoingPlans = async () => {
@@ -146,6 +105,11 @@ const ProfilePage = () => {
           ) : (
             <></>
           )}
+          {doingPlan?.yearPlans.length + doingPlan?.shortPlans.length === 0 ? (
+            <div>아무것도 없음</div>
+          ) : (
+            <></>
+          )}
         </UserInfoMiddleDiv>
         <UserInfoBottomDiv>
           <CompletedGoalTitleBox>
@@ -171,6 +135,11 @@ const ProfilePage = () => {
                 <ProfileCompletedGoalBar goal={plan.yearPlan} period="1년" />
               </OngoingGoalBox>
             ))
+          ) : (
+            <></>
+          )}
+          {donePlan?.yearPlans.length + donePlan?.shortPlans.length === 0 ? (
+            <div>아무것도 없음</div>
           ) : (
             <></>
           )}

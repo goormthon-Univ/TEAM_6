@@ -3,6 +3,6 @@ export interface CloudList {
 }
 
 export interface Cloud {
-  cloudId: string;
-  imageNum: string;
+  cloud_id: number;
+  image_num: number;
 }
