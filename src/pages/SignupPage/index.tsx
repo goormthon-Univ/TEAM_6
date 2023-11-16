@@ -89,7 +89,7 @@ const IonIdInputBox = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 20rem;
+  width: 18rem;
 
   position: relative;
 `;
@@ -101,7 +101,7 @@ const IonInputBox = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 20rem;
+  width: 18rem;
 
   position: relative;
 `;

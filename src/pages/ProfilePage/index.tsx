@@ -72,7 +72,7 @@ const ProfilePage = () => {
             진행중인 목표
           </OngoingGoalTitleBox>
           {doingPlan?.shortPlans ? (
-            doingPlan.shortPlans.map((plan) => (
+            doingPlan.shortPlans.map((plan, index) => (
               <OngoingGoalBox key={plan.shortPlanId}>
                 <ProfileOngoingGoalBar
                   id={String(plan.shortPlanId)}
@@ -82,6 +82,7 @@ const ProfilePage = () => {
                   }
                   period={String(plan.period) + "개월"}
                   type="short"
+                  tempId={String(index + 1)}
                 />
               </OngoingGoalBox>
             ))
@@ -89,7 +90,7 @@ const ProfilePage = () => {
             <></>
           )}
           {doingPlan?.yearPlans ? (
-            doingPlan.yearPlans.map((plan) => (
+            doingPlan.yearPlans.map((plan, index) => (
               <OngoingGoalBox key={plan.yearPlanId}>
                 <ProfileOngoingGoalBar
                   id={String(plan.yearPlanId)}
@@ -99,6 +100,13 @@ const ProfilePage = () => {
                   }
                   period="1년"
                   type="year"
+                  tempId={String(
+                    index +
+                      1 +
+                      (doingPlan?.yearPlans?.length
+                        ? doingPlan.yearPlans.length
+                        : 0)
+                  )}
                 />
               </OngoingGoalBox>
             ))
@@ -193,12 +201,7 @@ const StyledTextName = styled.div`
   width: 8.5rem;
 
   border: 0;
-  border-bottom: 1px solid #9c9c9c;
-
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid #9c9c9c;
-  }
+  /* border-bottom: 1px solid #9c9c9c; */
 `;
 
 const UserInfoMiddleDiv = styled.div`
