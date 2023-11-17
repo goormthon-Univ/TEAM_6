@@ -19,6 +19,7 @@ import YearlyInput from "../../components/mainComponents/YearlyInput";
 import CancelConfirmBtn from "../../components/mainComponents/CancelConfirmBtn";
 import { customAxios } from "../../lib/customAxios";
 import { YearPlan } from "../../types/YearPlan";
+import { ShortPlan } from "../../types/ShortPlan";
 
 const MainPage = () => {
   const [isObjectExist, setIsObjectExist] = React.useState(true);
@@ -91,7 +92,7 @@ const MainPage = () => {
         {isObjectExist ? (
           <>
             <ObjectContainer>
-              <YearObjectTitle object={currentPlan?.yearPlan || currentPlan?.shortPlan} />
+              <YearObjectTitle object_title={currentPlan?.yearPlan || currentPlan?.shortPlan || ''} />
               { currentPlan?.halfPlan && <HalfYearObjectTitle object={currentPlan?.halfPlan} /> }
             </ObjectContainer>
 
@@ -111,7 +112,7 @@ const MainPage = () => {
               waterDrop={currentPlan?.waterDrop}
               miniCloud={currentPlan?.miniCloud}
               isYearly={isYearly}
-              id={currentPlan?.year_plan_id || currentPlan?.short_plan_id}
+              plan_id={currentPlan?.year_plan_id || currentPlan?.short_plan_id || 1}
             />
           </>
         ) : (
@@ -130,7 +131,25 @@ const MainPage = () => {
             <ObjectInputContainer $isEditing={isEditing}>
               <YearlyInput isYearly={isYearly} />
               <ShortTermInput isYearly={isYearly} />
-              <CancelConfirmBtn hasCancel={true} confirmMessage='완료' onCancel={() => {setIsEditing(false)}} />
+              <CancelConfirmBtn hasCancel={true} confirmMessage='완료' 
+                onCancel={() => {setIsEditing(false)}} 
+                onConfirm={() => {
+                  let data;
+                  let form;
+                  if ( isYearly ) {
+                    form = document.forms[0].getElementsByTagName('textarea');
+                    data = {
+                      'userId' : 1,
+                      'year' : 2023,
+                      'yearPlan' : form[0].value,
+                      'halfPlan' : form[1].value,
+                    }
+                  } else {
+                    form = document.forms;
+                    console.log(form);
+                  }
+                  
+              }}/>
             </ObjectInputContainer>
           </>
         ) 

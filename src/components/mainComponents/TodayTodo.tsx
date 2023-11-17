@@ -13,10 +13,10 @@ type Props = {
   waterDrop?: number;
   miniCloud?: number;
   isYearly: boolean;
-  id: number;
+  plan_id: number;
 }
 
-function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYearly, id}: Props) {
+function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYearly, plan_id}: Props) {
 
   const [currDone, setCurrDone] = useState(isDone);
   const [currPass, setCurrPass] = useState(isPass);
@@ -25,9 +25,9 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
     let uri = '/main/DailyDone?';
 
     let request_body = isYearly ? {
-      "year_plan_id": id,
+      "year_plan_id": plan_id,
     } : {
-      "short_plan_id": id,
+      "short_plan_id": plan_id,
     }
 
     if ( steam == 6 ) { // 수증기가 완성되는 경우
@@ -74,16 +74,16 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
   const setUndone = async (exception: boolean) => {
 
     const request_body = isYearly ? {
-      "year_plan_id" : id
+      year_plan_id : plan_id
     } : {
-      "short_plan_id" : id
+      short_plan_id : plan_id
     };
 
     await customAxios
       .put('/main/DailyDone?exception=' + ( exception ? 1 : 0), request_body)
       .then((res) => {
         console.log(res);
-        console.log(window.location.hostname);
+        //  console.log(window.location.hostname);
       })
       .catch((error) => {
         console.log(window.location.hostname);

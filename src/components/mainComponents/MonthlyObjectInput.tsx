@@ -3,15 +3,16 @@ import styled from 'styled-components';
 
 type Props = {
     month: number;
+    name: string;
 }
 
-function MonthlyObjectInput({month}: Props) {
+function MonthlyObjectInput({month, name}: Props) {
   return (
     <Container>
         <DayBox>
             { month }개월
         </DayBox>
-        <DayInputBox placeholder={month + '개월 차의 목표를 적어주세요!'} />
+        <DayInputBox name={name} placeholder={month + '개월 차의 목표를 적어주세요!'} />
     </Container>
   )
 }

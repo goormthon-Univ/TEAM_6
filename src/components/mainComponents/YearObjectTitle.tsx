@@ -2,12 +2,12 @@ import React from 'react'
 import styled from 'styled-components';
 
 type Props = {
-    object: string;
+  object_title: string;
 }
 
-function YearObjectTitle({object}: Props) {
+function YearObjectTitle({object_title}: Props) {
   return (
-    <Container>{object}</Container>
+    <Container>{object_title}</Container>
   );
 }
 
