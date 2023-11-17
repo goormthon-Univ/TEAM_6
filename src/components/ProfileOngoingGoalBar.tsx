@@ -5,7 +5,11 @@ import styled from "styled-components";
 import ProfileEditModar from "./ProfileEditModar";
 import ProfileDeleteModar from "./ProfileDeleteModar";
 import { customAxios } from "../lib/customAxios";
-import { DailyPlan, DailyPlanElement } from "../types/DailyPlan";
+import {
+  DailyPlan,
+  DailyPlanElement,
+  DailyPlanRequest,
+} from "../types/DailyPlan";
 
 interface ProfileOngoingGoalBarProps {
   id: string;
@@ -35,13 +39,14 @@ const ProfileOngoingGoalBar = ({
     }
   }, []);
 
-  const setRequestDailyPlanElement = async (prop: DailyPlanElement[]) => {
+  const setRequestDailyPlanElement = async (prop: DailyPlanRequest) => {
     if (type === "short") {
       await customAxios
         .put(`/DailyPlan/shortPlan/${id}`, { data: prop })
         .then((res) => {
           console.log("short 고정 주 목표 로드 성공");
           console.log(res);
+          dismissEditGoalModar();
         })
         .catch((error) => {
           console.log("short 고정 주 목표 로드 실패");
@@ -53,6 +58,7 @@ const ProfileOngoingGoalBar = ({
         .then((res) => {
           console.log("year 고정 주 목표 설정 성공");
           console.log(res);
+          dismissEditGoalModar();
         })
         .catch((error) => {
           console.log("year 고정 주 목표 설정 실패");
@@ -63,10 +69,9 @@ const ProfileOngoingGoalBar = ({
     }
   };
 
-  const handleSubmitWeekGoal = async (prop: DailyPlanElement[]) => {
+  const handleSubmitWeekGoal = async (prop: DailyPlanRequest) => {
     await setRequestDailyPlanElement(prop);
     console.log(prop);
-    dismissEditGoalModar();
   };
 
   const handleDeleteGoal = async () => {
