@@ -107,6 +107,11 @@ const MainPage = () => {
               todo={currentPlan?.dailyPlan}
               isDone={true}
               isPass={false}
+              steam={currentPlan?.steam}
+              waterDrop={currentPlan?.waterDrop}
+              miniCloud={currentPlan?.miniCloud}
+              isYearly={isYearly}
+              id={currentPlan?.year_plan_id || currentPlan?.short_plan_id}
             />
           </>
         ) : (

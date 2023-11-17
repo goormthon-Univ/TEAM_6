@@ -1,30 +1,120 @@
 import { IonCheckbox, IonIcon, IonLabel } from '@ionic/react';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { checkmarkOutline } from 'ionicons/icons'
+import { customAxios } from '../../lib/customAxios';
 
 type Props = {
   day: string;
   todo?: string;
   isDone: boolean;
   isPass: boolean;
+  steam?: number;
+  waterDrop?: number;
+  miniCloud?: number;
+  isYearly: boolean;
+  id: number;
 }
 
-function TodayTodo({day, todo, isDone, isPass}: Props) {
+function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYearly, id}: Props) {
+
+  const [currDone, setCurrDone] = useState(isDone);
+  const [currPass, setCurrPass] = useState(isPass);
+
+  const setDone = async (exception: boolean) => {
+    let uri = '/main/DailyDone?';
+
+    let request_body = isYearly ? {
+      "year_plan_id": id,
+    } : {
+      "short_plan_id": id,
+    }
+
+    if ( steam == 6 ) { // 수증기가 완성되는 경우
+      console.log('수증기 생성');
+      uri += 'type=1&';
+      if ( waterDrop === 3 ) { // 미니 구름이 완성되는 경우
+        console.log('미니 구름 완성');
+        uri += 'type=2&';
+        request_body = Object.assign(request_body, {
+          'img' : Math.floor(Math.random() * 4) + 1
+        })
+        if ( miniCloud === 12) { // 구름이 완성되는 경우
+          console.log('구름 완성');
+          uri += 'type=3&';
+          request_body = Object.assign(request_body, {
+            'img' : Math.floor(Math.random() * 8) + 1
+          })
+        }
+      }
+    } else {
+      uri += 'type=0&';
+    }
+
+    if ( exception ) {
+      uri += 'exception=1';
+    } else {
+      uri += 'exception=0';
+    }
+
+    await customAxios
+      .post(uri, request_body)
+      .then((res) => {
+        console.log(res);
+        console.log(window.location.hostname);
+      })
+      .catch((error) => {
+        console.log(window.location.hostname);
+        console.log(uri, request_body);
+        console.log("달성한 일 등록 실패");
+        console.log(error);
+      });
+  }
+
+  const setUndone = async (exception: boolean) => {
+
+    const request_body = isYearly ? {
+      "year_plan_id" : id
+    } : {
+      "short_plan_id" : id
+    };
+
+    await customAxios
+      .put('/main/DailyDone?exception=' + ( exception ? 1 : 0), request_body)
+      .then((res) => {
+        console.log(res);
+        console.log(window.location.hostname);
+      })
+      .catch((error) => {
+        console.log(window.location.hostname);
+        console.log("달성한 일 취소 실패");
+        console.log(error);
+      });
+  }
+
   return (
     <Container>
       <IonLabel color='dark'><IonIcon color='medium' icon={checkmarkOutline} /> 오늘 달성할 일</IonLabel>
       <TodoContainer>
         <TodoBox>
           <DayBox>{day}</DayBox>
-          <TodoCheck value={isDone} color='medium' onIonChange={(e) => {
-            console.log(e.detail.value);
-            
+          <TodoCheck checked={currDone} color='medium' onIonChange={(e) => {
+            setCurrDone(e.detail.checked);
+            if ( e.detail.checked === true ) {
+              setDone(false)
+            } else {
+              setUndone(false)
+            }
           }}>{todo}</TodoCheck>
         </TodoBox>
         <PassBox>
-          <PassCheck value={isPass} color='medium' onIonChange={(e) => {
-            console.log(e.detail.value);
+          <PassCheck checked={currPass} color='medium' onIonChange={(e) => {
+            setCurrPass(e.detail.checked);
+            if ( e.detail.checked === true ) {
+              setDone(true)
+            } else {
+              setUndone(true)
+            }
           }}>😔 오늘은 사정이 있어서 못했어요</PassCheck>
         </PassBox>
       </TodoContainer>
