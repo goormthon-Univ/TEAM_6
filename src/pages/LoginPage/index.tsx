@@ -11,6 +11,7 @@ import { UserData } from "../../types/UserData";
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoginFailed, setIsLoginFailed] = useState<boolean>(false);
   const history = useHistory();
 
   const requestLogin = async () => {
@@ -24,11 +25,13 @@ const LoginPage = () => {
       .then((res) => {
         console.log("로그인 성공");
         console.log(res.data);
+        setIsLoginFailed(false);
         resisterloginData(res.data);
         history.push("/main");
       })
       .catch((error) => {
         console.log("로그인 실패");
+        setIsLoginFailed(true);
         console.log(error);
       });
   };
@@ -47,7 +50,7 @@ const LoginPage = () => {
       <MainImage />
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
-          <StyledInputBox>
+          <StyledInputBox isLoginFailed={isLoginFailed}>
             <StyledInput
               type="text"
               value={id}
@@ -56,7 +59,7 @@ const LoginPage = () => {
             />
             <StyledLock isOpen={true} />
           </StyledInputBox>
-          <StyledInputBox>
+          <StyledInputBox isLoginFailed={isLoginFailed}>
             <StyledInput
               type="password"
               value={password}
@@ -99,7 +102,7 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const StyledInputBox = styled.div`
+const StyledInputBox = styled.div<{ isLoginFailed: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -109,7 +112,7 @@ const StyledInputBox = styled.div`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid #f1f1f1;
+  border: 2px solid ${(props) => (props?.isLoginFailed ? "#FC8787" : "#f1f1f1")};
   border-radius: 1rem;
 `;
 
