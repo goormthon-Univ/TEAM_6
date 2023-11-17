@@ -13,6 +13,11 @@ type Props = {
 }
 
 function ShortTermInput({isYearly}: Props) {
+
+  const setShortPlan = () => {
+    
+  }
+
   return ( !isYearly &&
     <Container>
       <ObjectInputTitle numbering={1} title="단기 목표" />
@@ -21,7 +26,7 @@ function ShortTermInput({isYearly}: Props) {
       </ObjectSubTitle>
       <MonthSelectContainer>
           {[1,2,3,4,5,6].map((e) => (
-              <MonthSelectButton month={e}/>
+              <MonthSelectButton month={e} key={'month' + e}/>
           ))}
       </MonthSelectContainer>
 
@@ -41,7 +46,7 @@ function ShortTermInput({isYearly}: Props) {
 
       <ObjectInputTitle numbering={3} title="일별 목표" />
       { ['월', '화', '수', '목', '금', '토', '일'].map((e) => (
-        <DailyInput day={e} />
+        <DailyInput day={e} key={'day' + e} />
       ))}
     </Container>
   )

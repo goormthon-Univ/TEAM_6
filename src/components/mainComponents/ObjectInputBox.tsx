@@ -3,11 +3,17 @@ import { styled } from 'styled-components';
 
 type Props = {
     content: string;
+    value?: string;
 }
 
-function ObjectInputBox({content}: Props) {
+function ObjectInputBox({content, value}: Props) {
+
+  const [currValue, setCurrValue] = React.useState(value);
+
   return (
-    <Container placeholder={content}/>
+    <Container placeholder={content} value={currValue || ''} onChange={(e) => {
+      setCurrValue(e.target.value);
+    }}/>
   )
 }
 

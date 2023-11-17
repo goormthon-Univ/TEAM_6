@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   IonContent,
   IonLabel,
@@ -17,23 +17,73 @@ import TodayTodo from "../../components/mainComponents/TodayTodo";
 import ShortTermInput from "../../components/mainComponents/ShortTermInput";
 import YearlyInput from "../../components/mainComponents/YearlyInput";
 import CancelConfirmBtn from "../../components/mainComponents/CancelConfirmBtn";
+import { customAxios } from "../../lib/customAxios";
+import { YearPlan } from "../../types/YearPlan";
 
 const MainPage = () => {
-  const [isObjectExist, setIsObjectExist] = React.useState(false);
-  const [isEditing, setIsEditing] = React.useState(true);
+  const [isObjectExist, setIsObjectExist] = React.useState(true);
+  const [isEditing, setIsEditing] = React.useState(false);
   const [isYearly, setIsYearly] = React.useState(false);
+
+  const [planList, setPlanList] = React.useState<ShortPlan[] | YearPlan[] | undefined>(undefined);
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [currentPlan, setCurrentPlan] = React.useState<ShortPlan | YearPlan | undefined>(undefined);
+  
+  const getPlanList = async () => {
+    await customAxios
+      .get("/main")
+      .then((res) => {
+        console.log(window.location.hostname);
+        setPlanList([...res.data.shortPlans, ...res.data.yearPlans]);
+      })
+      .catch((error) => {
+        console.log(window.location.hostname);
+        console.log("메인 목록 가져오기 실패");
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getPlanList();
+  }, []);
+
+  useEffect(() => {
+    if ( planList &&  planList[currentPage || 0] ) {
+      setCurrentPlan(planList[currentPage || 0]);
+      setIsObjectExist(true);
+    } else {
+      setIsObjectExist(false);
+    }
+    console.log(currentPage, planList, currentPlan);
+  }, [planList]);
+
+
+  useEffect(() => {
+    if ( planList &&  planList[currentPage || 0] ) {
+      setCurrentPlan(planList[currentPage || 0]);
+      setIsObjectExist(true);
+    } else {
+      setIsObjectExist(false);
+    }
+    console.log(currentPage, planList, currentPlan);
+  }, [currentPage]);
 
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonSegment value="object1" mode="md">
-          <IonSegmentButton value="object1">
+        <IonSegment value={currentPage} mode="md" onIonChange={(e) => {
+          e.target.value = e.detail.value;
+          if ( e.detail.value !== undefined ) {
+            setCurrentPage(parseInt(e.detail.value.toString()));
+          }
+        }}>
+          <IonSegmentButton value={0}>
             <ObjectLabel>목표 1</ObjectLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="object2">
+          <IonSegmentButton value={1}>
             <ObjectLabel>목표 2</ObjectLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="object3">
+          <IonSegmentButton value={2}>
             <ObjectLabel>목표 3</ObjectLabel>
           </IonSegmentButton>
         </IonSegment>
@@ -41,28 +91,33 @@ const MainPage = () => {
         {isObjectExist ? (
           <>
             <ObjectContainer>
-              <YearObjectTitle object="10kg 다이어트" />
-              <HalfYearObjectTitle object="5kg 다이어트" />
+              <YearObjectTitle object={currentPlan?.yearPlan || currentPlan?.shortPlan} />
+              { currentPlan?.halfPlan && <HalfYearObjectTitle object={currentPlan?.halfPlan} /> }
             </ObjectContainer>
 
-            <StatusBar title="구름 완성까지" total={13} current={3} />
-            <CloudCount count={1} />
+            <StatusBar title="구름 완성까지" total={13} current={currentPlan?.miniCloud || 0} />
+            <CloudCount count={currentPlan?.miniCloud || 0} />
 
-            <HumidityStatus total={7} current={3} />
+            <HumidityStatus total={7} current={currentPlan?.steam || 0} />
 
-            <MonthObjectTitle object="1kg 다이어트" />
+            { currentPlan?.monthPlan && <MonthObjectTitle object={currentPlan?.monthPlan} /> }
 
             <TodayTodo
-              day={"목"}
-              todo="줄넘기 100회"
-              isDone={false}
+              day={"금"}
+              todo={currentPlan?.dailyPlan}
+              isDone={true}
               isPass={false}
+              steam={currentPlan?.steam}
+              waterDrop={currentPlan?.waterDrop}
+              miniCloud={currentPlan?.miniCloud}
+              isYearly={isYearly}
+              id={currentPlan?.year_plan_id || currentPlan?.short_plan_id}
             />
           </>
         ) : (
           <>
             <IonLabel style={{ display: `${ isEditing ? 'none' : 'flex' }`, justifyContent: 'center', marginTop: '50%' }}>목표가 없습니다. 새로운 목표를 설정해보세요.</IonLabel>
-            <MakeObjectBtnContainer isEditing={isEditing}>
+            <MakeObjectBtnContainer $isEditing={isEditing}>
               <MakeObjectBtn onClick={()=>{
                 setIsEditing(true);
                 setIsYearly(true);
@@ -72,7 +127,7 @@ const MainPage = () => {
                 setIsYearly(false);
               }}>단기 목표</MakeObjectBtn>
             </MakeObjectBtnContainer>
-            <ObjectInputContainer isEditing={isEditing}>
+            <ObjectInputContainer $isEditing={isEditing}>
               <YearlyInput isYearly={isYearly} />
               <ShortTermInput isYearly={isYearly} />
               <CancelConfirmBtn hasCancel={true} confirmMessage='완료' onCancel={() => {setIsEditing(false)}} />
@@ -111,8 +166,8 @@ const ObjectContainer = styled.div`
   padding: 0.2rem 0rem;
 `;
 
-const MakeObjectBtnContainer = styled.div<{ isEditing: boolean }>`
-  display: ${(props) => props.isEditing ? 'none' : 'flex' };
+const MakeObjectBtnContainer = styled.div<{ $isEditing: boolean }>`
+  display: ${(props) => props.$isEditing ? 'none' : 'flex' };
   margin-top: 1rem;
   gap: 1.5rem;
   justify-content: center;
@@ -129,8 +184,8 @@ const MakeObjectBtn = styled.button`
   }
 `
 
-const ObjectInputContainer = styled.div<{ isEditing: boolean }>`
-  display: ${(props) => props.isEditing ? 'flex' : 'none' };
+const ObjectInputContainer = styled.div<{ $isEditing: boolean }>`
+  display: ${(props) => props.$isEditing ? 'flex' : 'none' };
   flex-direction: column;
   margin: 0 auto;
   width: 80%;
