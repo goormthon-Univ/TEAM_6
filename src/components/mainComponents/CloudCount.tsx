@@ -11,7 +11,7 @@ function CloudCount({ count }: Props) {
       <IonLabel style={{ textAlign: 'left', color: 'var(--ion-color-dark)', marginRight: '1rem' }} color='dark'>미니 구름 완성까지</IonLabel>
       {
         [0, 1, 2, 3].map((e)=>(
-          <CloudCircle isDone={e < count }/>
+          <CloudCircle isDone={e < count } key={'cloud' + e} />
         ))
       }
     </Container>
