@@ -30,16 +30,16 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
       "short_plan_id": plan_id,
     }
 
-    if ( steam == 6 ) { // 수증기가 완성되는 경우
+    if ( steam && steam >= 6 ) { // 수증기가 완성되는 경우
       console.log('수증기 생성');
       uri += 'type=1&';
-      if ( waterDrop === 3 ) { // 미니 구름이 완성되는 경우
+      if ( waterDrop && waterDrop >= 3 ) { // 미니 구름이 완성되는 경우
         console.log('미니 구름 완성');
         uri += 'type=2&';
         request_body = Object.assign(request_body, {
           'img' : Math.floor(Math.random() * 4) + 1
         })
-        if ( miniCloud === 12) { // 구름이 완성되는 경우
+        if ( miniCloud && miniCloud >= 12) { // 구름이 완성되는 경우
           console.log('구름 완성');
           uri += 'type=3&';
           request_body = Object.assign(request_body, {

@@ -126,17 +126,17 @@ const MainPage = () => {
             </ObjectContainer>
 
             <StatusBar title="구름 완성까지" total={13} current={currentPlan?.miniCloud || 0} />
-            <CloudCount count={currentPlan?.miniCloud || 0} />
+            <CloudCount count={currentPlan?.steam || 0} />
 
-            <HumidityStatus total={7} current={currentPlan?.steam || 0} />
+            <HumidityStatus total={7} current={currentPlan?.waterDrop || 0} />
 
             { currentPlan?.monthPlan && <MonthObjectTitle object={currentPlan?.monthPlan} /> }
 
             <TodayTodo
               day={"금"}
               todo={currentPlan?.dailyPlan}
-              isDone={true}
-              isPass={false}
+              isDone={currentPlan?.done || false}
+              isPass={currentPlan?.exception || false }
               steam={currentPlan?.steam}
               waterDrop={currentPlan?.waterDrop}
               miniCloud={currentPlan?.miniCloud}
