@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LockImage from "../../assets/login/LockImage";
 import { customAxios } from "../../lib/customAxios";
@@ -9,10 +9,20 @@ import { useIonRouter } from "@ionic/react";
 import mainImg from "../../assets/login/mainImg.png";
 
 const LoginPage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId !== -1 && window.location.pathname === "/login") {
+      console.log(window.location.pathname);
+      ionRouter.push("/main");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoginFailed, setIsLoginFailed] = useState<boolean>(false);
-  const ionRouter = useIonRouter();
 
   const requestLogin = async () => {
     await customAxios

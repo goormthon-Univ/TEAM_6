@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
 import LockImage from "../../assets/login/LockImage";
@@ -7,14 +7,25 @@ import { customAxios } from "../../lib/customAxios";
 import { Link, useHistory } from "react-router-dom";
 import { useIonRouter } from "@ionic/react";
 import mainImg from "../../assets/login/mainImg.png";
+import storage from "../../utils/storage";
 
 const SignupPage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId !== -1 && window.location.pathname === "/signup") {
+      console.log(window.location.pathname);
+      ionRouter.push("/main");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
   const [isDifferent, setIsDifferent] = useState<boolean>(false);
   const [isOkNickname, setIsOkNickname] = useState<boolean>(true);
-  const ionRouter = useIonRouter();
 
   const requestSignup = async () => {
     await customAxios

@@ -21,16 +21,33 @@ import { customAxios } from "../../lib/customAxios";
 import { YearPlan } from "../../types/YearPlan";
 import { ShortPlan } from "../../types/ShortPlan";
 import dayjs from "dayjs";
+import storage from "../../utils/storage";
+import { useIonRouter } from "@ionic/react";
 
 const MainPage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId === -1 && window.location.pathname === "/main") {
+      console.log(window.location.pathname);
+      ionRouter.push("/login");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
   const [isObjectExist, setIsObjectExist] = React.useState(true);
   const [isEditing, setIsEditing] = React.useState(false);
   const [isYearly, setIsYearly] = React.useState(false);
 
-  const [planList, setPlanList] = React.useState<ShortPlan[] | YearPlan[] | undefined>(undefined);
+  const [planList, setPlanList] = React.useState<
+    ShortPlan[] | YearPlan[] | undefined
+  >(undefined);
   const [currentPage, setCurrentPage] = React.useState(0);
-  const [currentPlan, setCurrentPlan] = React.useState<ShortPlan | YearPlan | undefined>(undefined);
-  
+  const [currentPlan, setCurrentPlan] = React.useState<
+    ShortPlan | YearPlan | undefined
+  >(undefined);
+
   const getPlanList = async () => {
     await customAxios
       .get("/main")
@@ -50,7 +67,7 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    if ( planList &&  planList[currentPage || 0] ) {
+    if (planList && planList[currentPage || 0]) {
       setCurrentPlan(planList[currentPage || 0]);
       setIsObjectExist(true);
     } else {
@@ -59,9 +76,8 @@ const MainPage = () => {
     console.log(currentPage, planList, currentPlan);
   }, [planList]);
 
-
   useEffect(() => {
-    if ( planList &&  planList[currentPage || 0] ) {
+    if (planList && planList[currentPage || 0]) {
       setCurrentPlan(planList[currentPage || 0]);
       setIsObjectExist(true);
     } else {
@@ -71,42 +87,44 @@ const MainPage = () => {
   }, [currentPage]);
 
   const addPlan = async (data: unknown) => {
-    if ( isYearly ) {
+    if (isYearly) {
       await customAxios
-      .post("/YearPlans", data)
-      .then((res) => {
-        console.log(window.location.hostname);
-      })
-      .catch((error) => {
-        console.log(window.location.hostname);
-        console.log("1년 목표 등록 실패");
-        console.log(error);
-      });
-
+        .post("/YearPlans", data)
+        .then((res) => {
+          console.log(window.location.hostname);
+        })
+        .catch((error) => {
+          console.log(window.location.hostname);
+          console.log("1년 목표 등록 실패");
+          console.log(error);
+        });
     } else {
       await customAxios
-      .post("/ShortPlans", data)
-      .then((res) => {
-        console.log(window.location.hostname);
-
-      })
-      .catch((error) => {
-        console.log(window.location.hostname);
-        console.log("단기 목표 등록 실패");
-        console.log(error);
-      });
+        .post("/ShortPlans", data)
+        .then((res) => {
+          console.log(window.location.hostname);
+        })
+        .catch((error) => {
+          console.log(window.location.hostname);
+          console.log("단기 목표 등록 실패");
+          console.log(error);
+        });
     }
-  }
+  };
 
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonSegment value={currentPage} mode="md" onIonChange={(e) => {
-          e.target.value = e.detail.value;
-          if ( e.detail.value !== undefined ) {
-            setCurrentPage(parseInt(e.detail.value.toString()));
-          }
-        }}>
+        <IonSegment
+          value={currentPage}
+          mode="md"
+          onIonChange={(e) => {
+            e.target.value = e.detail.value;
+            if (e.detail.value !== undefined) {
+              setCurrentPage(parseInt(e.detail.value.toString()));
+            }
+          }}
+        >
           <IonSegmentButton value={0}>
             <ObjectLabel>목표 1</ObjectLabel>
           </IonSegmentButton>
@@ -121,105 +139,144 @@ const MainPage = () => {
         {isObjectExist ? (
           <>
             <ObjectContainer>
-              <YearObjectTitle object_title={currentPlan?.yearPlan || currentPlan?.shortPlan || ''} />
-              { currentPlan?.halfPlan && <HalfYearObjectTitle object={currentPlan?.halfPlan} /> }
+              <YearObjectTitle
+                object_title={
+                  currentPlan?.yearPlan || currentPlan?.shortPlan || ""
+                }
+              />
+              {currentPlan?.halfPlan && (
+                <HalfYearObjectTitle object={currentPlan?.halfPlan} />
+              )}
             </ObjectContainer>
 
-            <StatusBar title="구름 완성까지" total={13} current={currentPlan?.miniCloud || 0} />
+            <StatusBar
+              title="구름 완성까지"
+              total={13}
+              current={currentPlan?.miniCloud || 0}
+            />
             <CloudCount count={currentPlan?.steam || 0} />
 
             <HumidityStatus total={7} current={currentPlan?.waterDrop || 0} />
 
-            { currentPlan?.monthPlan && <MonthObjectTitle object={currentPlan?.monthPlan} /> }
+            {currentPlan?.monthPlan && (
+              <MonthObjectTitle object={currentPlan?.monthPlan} />
+            )}
 
             <TodayTodo
               day={"금"}
               todo={currentPlan?.dailyPlan}
               isDone={currentPlan?.done || false}
-              isPass={currentPlan?.exception || false }
+              isPass={currentPlan?.exception || false}
               steam={currentPlan?.steam}
               waterDrop={currentPlan?.waterDrop}
               miniCloud={currentPlan?.miniCloud}
               isYearly={isYearly}
-              plan_id={currentPlan?.year_plan_id || currentPlan?.short_plan_id || 1}
+              plan_id={
+                currentPlan?.year_plan_id || currentPlan?.short_plan_id || 1
+              }
             />
           </>
         ) : (
           <>
-            <IonLabel style={{ display: `${ isEditing ? 'none' : 'flex' }`, justifyContent: 'center', marginTop: '50%' }}>목표가 없습니다. 새로운 목표를 설정해보세요.</IonLabel>
+            <IonLabel
+              style={{
+                display: `${isEditing ? "none" : "flex"}`,
+                justifyContent: "center",
+                marginTop: "50%",
+              }}
+            >
+              목표가 없습니다. 새로운 목표를 설정해보세요.
+            </IonLabel>
             <MakeObjectBtnContainer $isEditing={isEditing}>
-              <MakeObjectBtn onClick={()=>{
-                setIsEditing(true);
-                setIsYearly(true);
-              }}>1년 목표</MakeObjectBtn>
-              <MakeObjectBtn onClick={()=>{
-                setIsEditing(true);
-                setIsYearly(false);
-              }}>단기 목표</MakeObjectBtn>
+              <MakeObjectBtn
+                onClick={() => {
+                  setIsEditing(true);
+                  setIsYearly(true);
+                }}
+              >
+                1년 목표
+              </MakeObjectBtn>
+              <MakeObjectBtn
+                onClick={() => {
+                  setIsEditing(true);
+                  setIsYearly(false);
+                }}
+              >
+                단기 목표
+              </MakeObjectBtn>
             </MakeObjectBtnContainer>
             <ObjectInputContainer $isEditing={isEditing}>
               <YearlyInput isYearly={isYearly} />
               <ShortTermInput isYearly={isYearly} />
-              <CancelConfirmBtn hasCancel={true} confirmMessage='완료' 
-                onCancel={() => {setIsEditing(false)}} 
+              <CancelConfirmBtn
+                hasCancel={true}
+                confirmMessage="완료"
+                onCancel={() => {
+                  setIsEditing(false);
+                }}
                 onConfirm={() => {
                   let data;
                   let form;
-                  if ( isYearly ) { // 1년 목표
-                    form = document.forms[0].getElementsByTagName('textarea');
+                  if (isYearly) {
+                    // 1년 목표
+                    form = document.forms[0].getElementsByTagName("textarea");
                     const monthlyPlan = [];
-                    for ( let i=2 ; i < 8 ; i++ ) {
+                    for (let i = 2; i < 8; i++) {
                       monthlyPlan.push({
-                        'year' : dayjs().add(i-1, 'month').year,
-                        'month' : dayjs().add(i-1, 'month').month,
-                        'monthlyPlan' : form[i].value,
-                      })
+                        year: dayjs().add(i - 1, "month").year,
+                        month: dayjs().add(i - 1, "month").month,
+                        monthlyPlan: form[i].value,
+                      });
                     }
                     const dailyPlan = [];
-                    for ( let i=8 ; i < form.length ; i++ ) {
+                    for (let i = 8; i < form.length; i++) {
                       dailyPlan.push({
-                        'day' : i-7,
-                        'plan' : form[i].value,
-                      })
+                        day: i - 7,
+                        plan: form[i].value,
+                      });
                     }
                     data = {
-                      'userId' : 1,
-                      'year' : dayjs().year,
-                      'yearPlan' : form[0].value,
-                      'halfPlan' : form[1].value,
-                      'monthlyPlan' : monthlyPlan,
-                      'dailyPlan' : dailyPlan,
-                    }
-                  } else { // 단기 목표
-                    form = document.forms[0].getElementsByTagName('textarea');
+                      userId: 1,
+                      year: dayjs().year,
+                      yearPlan: form[0].value,
+                      halfPlan: form[1].value,
+                      monthlyPlan: monthlyPlan,
+                      dailyPlan: dailyPlan,
+                    };
+                  } else {
+                    // 단기 목표
+                    form = document.forms[0].getElementsByTagName("textarea");
                     const dailyPlan = [];
                     let period;
-                    for ( let i=0 ; i < 6 ; i++ ) {
-                      if ( document.forms[0].getElementsByTagName('input')[i].checked === true ) {
-                        period = i+1;
+                    for (let i = 0; i < 6; i++) {
+                      if (
+                        document.forms[0].getElementsByTagName("input")[i]
+                          .checked === true
+                      ) {
+                        period = i + 1;
                       }
                     }
-                    for ( let i=1 ; i < 8 ; i++ ) {
+                    for (let i = 1; i < 8; i++) {
                       dailyPlan.push({
-                        'day' : i,
-                        'plan' : form[i].value,
-                      })
+                        day: i,
+                        plan: form[i].value,
+                      });
                     }
                     data = {
-                      'userId' : 1,
-                      'year' : dayjs().year,
-                      'period' : period,
-                      'shortPlan' : form[0].value,
-                      'dailyPlan' : dailyPlan,
-                    }
+                      userId: 1,
+                      year: dayjs().year,
+                      period: period,
+                      shortPlan: form[0].value,
+                      dailyPlan: dailyPlan,
+                    };
                   }
-                  
+
                   addPlan(data);
-              }}/>
+                }}
+              />
             </ObjectInputContainer>
           </>
-        ) 
-      }
+        )}
       </IonContent>
     </IonPage>
   );
@@ -252,7 +309,7 @@ const ObjectContainer = styled.div`
 `;
 
 const MakeObjectBtnContainer = styled.div<{ $isEditing: boolean }>`
-  display: ${(props) => props.$isEditing ? 'none' : 'flex' };
+  display: ${(props) => (props.$isEditing ? "none" : "flex")};
   margin-top: 1rem;
   gap: 1.5rem;
   justify-content: center;
@@ -267,12 +324,12 @@ const MakeObjectBtn = styled.button`
     background: var(--ion-color-primary);
     color: white;
   }
-`
+`;
 
 const ObjectInputContainer = styled.div<{ $isEditing: boolean }>`
-  display: ${(props) => props.$isEditing ? 'flex' : 'none' };
+  display: ${(props) => (props.$isEditing ? "flex" : "none")};
   flex-direction: column;
   margin: 0 auto;
   width: 80%;
-`
+`;
 export default MainPage;

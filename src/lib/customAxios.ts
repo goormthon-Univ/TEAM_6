@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import storage from "../utils/storage";
 
 const host =
   window.location.hostname === "localhost"
@@ -8,6 +9,6 @@ const host =
 export const customAxios: AxiosInstance = axios.create({
   baseURL: host, // 기본 서버 주소 입력
   headers: {
-    userId: 1,
+    userId: storage.get("userData").userId,
   },
 });
