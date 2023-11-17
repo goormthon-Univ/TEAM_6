@@ -1,4 +1,4 @@
-import { IonButton, IonInput, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
@@ -47,7 +47,10 @@ const LoginPage = () => {
   };
   return (
     <BaseDiv>
-      <MainImage />
+      <StyledHeader>
+        <MainImage />
+      </StyledHeader>
+
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
           <StyledInputBox isLoginFailed={isLoginFailed}>
@@ -70,10 +73,18 @@ const LoginPage = () => {
             />
             <StyledLock isOpen={false} />
           </StyledInputBox>
+          {isLoginFailed ? (
+            <StyledAlertDiv>잘못된 닉네임/비밀번호 입니다.</StyledAlertDiv>
+          ) : (
+            <></>
+          )}
           <IonBtnBox>
             <StyledIonButton type="submit">로그인</StyledIonButton>
           </IonBtnBox>
         </form>
+        <StyledLinkBox>
+          <StyledLink href="/signup">회원가입</StyledLink>
+        </StyledLinkBox>
       </StyledContent>
     </BaseDiv>
   );
@@ -87,8 +98,18 @@ const BaseDiv = styled(IonPage)`
   align-items: center;
   justify-content: center;
 
+  background-color: white;
+
   width: 100%;
   height: 100%;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 7rem;
 `;
 
 const StyledContent = styled.div`
@@ -147,3 +168,30 @@ const StyledIonButton = styled(IonButton)`
 `;
 
 const StyledLock = styled(LockImage)``;
+
+const StyledAlertDiv = styled.div`
+  width: 18rem;
+  text-align: right;
+  color: #fc8787;
+  font-size: 0.7rem;
+`;
+
+const StyledLinkBox = styled.div`
+  margin-top: 0.2rem;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 18rem;
+  text-align: right;
+`;
+
+const StyledLink = styled.a`
+  text-decoration: none;
+
+  text-align: right;
+  color: #b4b4b4;
+  font-size: 0.8rem;
+
+  cursor: pointer;
+`;
