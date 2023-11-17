@@ -34,7 +34,11 @@ const CollectionModal = ({
   }, []);
   const getMoreCloud = () => {
     const newItems: string[] = [];
-    for (let i = 0; i < 30; i++) {
+    for (
+      let i = 0;
+      i < 60 - (((items.length % 60) + GoalList.length) % 60);
+      i++
+    ) {
       newItems.push(`Cloud ${1 + items.length + i}`);
     }
     setItems([...items, ...newItems]);

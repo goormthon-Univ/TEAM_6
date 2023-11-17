@@ -2,56 +2,118 @@ import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
+import LockImage from "../../assets/login/LockImage";
+import { customAxios } from "../../lib/customAxios";
+import { useHistory } from "react-router";
 
 const SignupPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
+  const [isDifferent, setIsDifferent] = useState<boolean>(false);
+  const [isOkNickname, setIsOkNickname] = useState<boolean>(true);
+  const history = useHistory();
 
-  const requestSignup = () => {};
+  const requestSignup = async () => {
+    await customAxios
+      .post("/auth/signup", {
+        data: {
+          nickname: id,
+          password: password,
+        },
+      })
+      .then((res) => {
+        console.log("회원가입 성공");
+        console.log(res.data);
+        history.push("/login");
+      })
+      .catch((error) => {
+        console.log("회원가입 실패");
+        console.log(error);
+      });
+  };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (password === repassword) {
+      setIsDifferent(false);
+    } else {
+      setIsDifferent(true);
+    }
+    const checkNicknameres = await checkNickname();
+    if (checkNicknameres && !isDifferent) {
+      requestSignup();
+    }
+  };
+
+  const checkNickname = async (): Promise<boolean> => {
+    await customAxios
+      .get(`/auth/${id}/exists`)
+      .then((res) => {
+        console.log("닉네임 체크 성공");
+        console.log(res.data);
+        setIsOkNickname(
+          (res?.data?.exists ? res.data.exists : false) as boolean
+        );
+        return res.data.exists as boolean;
+      })
+      .catch((error) => {
+        console.log("닉네임 체크 성공");
+        console.log(error);
+        setIsOkNickname(false);
+        return false;
+      });
+    setIsOkNickname(false);
+    return false;
+  };
+
   return (
     <BaseDiv>
       <MainImage />
       <StyledContent>
-        <form onSubmit={handleSubmit} action="">
-          <IonIdInputBox>
-            <StyledIonInput
-              counter={true}
-              maxlength={20}
-              aria-label="Primary input"
-              color="primary"
+        <form onSubmit={(e) => handleSubmit(e)} action="">
+          <StyledIdInputBox isOkNickname={isOkNickname}>
+            <StyledInput
               type="text"
               value={id}
-              onIonInput={(e) => setId(e?.detail?.value ? e.detail.value : "")}
-              placeholder="아이디를 입력해주세요"
+              onChange={(e) => setId(e?.target?.value ? e.target.value : "")}
+              placeholder="닉네임을 입력해주세요"
             />
-          </IonIdInputBox>
-          <IonInputBox>
-            <StyledIonInput
-              aria-label="Primary input"
-              color="primary"
+            <StyledLock isOpen={true} />
+          </StyledIdInputBox>
+          {isOkNickname ? (
+            <></>
+          ) : (
+            <StyledAlertDiv>중복된 닉네임입니다.</StyledAlertDiv>
+          )}
+          <StyledPasswordInputBox isDifferent={isDifferent}>
+            <StyledInput
               type="password"
               value={password}
-              onIonInput={(e) =>
-                setPassword(e?.detail?.value ? e.detail.value : "")
+              onChange={(e) =>
+                setPassword(e?.target?.value ? e.target.value : "")
               }
               placeholder="비밀번호를 입력해주세요"
             />
-          </IonInputBox>
-          <IonInputBox>
-            <StyledIonInput
-              aria-label="Primary input"
-              color="primary"
+            <StyledLock isOpen={false} />
+          </StyledPasswordInputBox>
+          <StyledPasswordInputBox isDifferent={isDifferent}>
+            <StyledInput
               type="password"
               value={repassword}
-              onIonInput={(e) =>
-                setRepassword(e?.detail?.value ? e.detail.value : "")
+              onChange={(e) =>
+                setRepassword(e?.target?.value ? e.target.value : "")
               }
               placeholder="비밀번호를 다시 입력해주세요"
             />
-          </IonInputBox>
+            <StyledLock isOpen={false} />
+          </StyledPasswordInputBox>
+          {isDifferent ? (
+            <StyledAlertDiv>비밀번호가 일치하기 않습니다.</StyledAlertDiv>
+          ) : (
+            <></>
+          )}
+
           <IonBtnBox>
             <StyledIonButton type="submit">회원가입</StyledIonButton>
           </IonBtnBox>
@@ -84,41 +146,43 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const IonIdInputBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 18rem;
-
-  position: relative;
-`;
-
-const IonInputBox = styled.div`
+const StyledIdInputBox = styled.div<{ isOkNickname: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
+  height: 3.5rem;
   width: 18rem;
 
-  position: relative;
+  border: 2px solid ${(props) => (props?.isOkNickname ? "#f1f1f1" : "#FC8787")};
+  border-radius: 1rem;
 `;
 
-const StyledIonInput = styled(IonInput)`
-  --padding-top: 1.2rem;
-  --padding-bottom: 1.2rem;
-  --padding-start: 1rem;
-  --padding-end: 1rem;
+const StyledPasswordInputBox = styled.div<{ isDifferent: boolean }>`
+  margin-top: 0.8rem;
 
-  width: 20rem;
-  border: 2px solid var(--5, #f1f1f1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 3.5rem;
+  width: 18rem;
+
+  border: 2px solid ${(props) => (props?.isDifferent ? "#FC8787" : "#f1f1f1")};
   border-radius: 1rem;
+`;
+
+const StyledInput = styled.input`
+  width: 15rem;
+  border: none;
 
   font-size: 0.8rem;
 
-  position: relative;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const IonBtnBox = styled.div`
@@ -138,4 +202,13 @@ const StyledIonButton = styled(IonButton)`
 
   --box-shadow: none;
   width: 9rem;
+`;
+
+const StyledLock = styled(LockImage)``;
+
+const StyledAlertDiv = styled.div`
+  width: 18rem;
+  text-align: right;
+  color: #fc8787;
+  font-size: 0.7rem;
 `;

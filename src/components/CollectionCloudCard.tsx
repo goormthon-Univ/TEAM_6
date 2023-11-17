@@ -64,6 +64,8 @@ const CollectionImageBox = styled.div`
   width: 100%;
   height: 100%;
 
+  font-size: 0.7rem;
+
   border: 1px solid rgba(255, 184, 174, 0.2);
   border-radius: 1.5rem;
   box-shadow: 2px 2px 4px rgba(255, 184, 174, 0.2);

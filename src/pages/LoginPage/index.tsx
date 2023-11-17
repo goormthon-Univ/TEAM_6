@@ -2,41 +2,71 @@ import { IonButton, IonInput, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
+import LockImage from "../../assets/login/LockImage";
+import { customAxios } from "../../lib/customAxios";
+import { useHistory } from "react-router";
+import storage from "../../utils/storage";
+import { UserData } from "../../types/UserData";
 
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const history = useHistory();
 
-  const requestLogin = () => {};
+  const requestLogin = async () => {
+    await customAxios
+      .post("/auth/login", {
+        data: {
+          nickname: id,
+          password: password,
+        },
+      })
+      .then((res) => {
+        console.log("로그인 성공");
+        console.log(res.data);
+        resisterloginData(res.data);
+        history.push("/main");
+      })
+      .catch((error) => {
+        console.log("로그인 실패");
+        console.log(error);
+      });
+  };
 
-  const handleSubmit = () => {};
+  const resisterloginData = (prop: UserData) => {
+    storage.set("userData", prop);
+    console.log("로컬 저장 완료");
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    requestLogin();
+  };
   return (
     <BaseDiv>
       <MainImage />
       <StyledContent>
-        <form onSubmit={handleSubmit} action="">
-          <IonIdInputBox>
-            <StyledIonInput
-              aria-label="Primary input"
-              color="primary"
+        <form onSubmit={(e) => handleSubmit(e)} action="">
+          <StyledInputBox>
+            <StyledInput
               type="text"
               value={id}
-              onIonInput={(e) => setId(e?.detail?.value ? e.detail.value : "")}
-              placeholder="아이디를 입력해주세요"
+              onChange={(e) => setId(e?.target?.value ? e.target.value : "")}
+              placeholder="닉네임을 입력해주세요"
             />
-          </IonIdInputBox>
-          <IonInputBox>
-            <StyledIonInput
-              aria-label="Primary input"
-              color="primary"
+            <StyledLock isOpen={true} />
+          </StyledInputBox>
+          <StyledInputBox>
+            <StyledInput
               type="password"
               value={password}
-              onIonInput={(e) =>
-                setPassword(e?.detail?.value ? e.detail.value : "")
+              onChange={(e) =>
+                setPassword(e?.target?.value ? e.target.value : "")
               }
               placeholder="비밀번호를 입력해주세요"
             />
-          </IonInputBox>
+            <StyledLock isOpen={false} />
+          </StyledInputBox>
           <IonBtnBox>
             <StyledIonButton type="submit">로그인</StyledIonButton>
           </IonBtnBox>
@@ -69,41 +99,29 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const IonIdInputBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 18rem;
-
-  position: relative;
-`;
-
-const IonInputBox = styled.div`
+const StyledInputBox = styled.div`
   margin-top: 0.8rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
+  height: 3.5rem;
   width: 18rem;
 
-  position: relative;
+  border: 2px solid #f1f1f1;
+  border-radius: 1rem;
 `;
 
-const StyledIonInput = styled(IonInput)`
-  --padding-top: 1.2rem;
-  --padding-bottom: 1.2rem;
-  --padding-start: 1rem;
-  --padding-end: 1rem;
-
-  width: 20rem;
-  border: 2px solid var(--5, #f1f1f1);
-  border-radius: 1rem;
+const StyledInput = styled.input`
+  width: 15rem;
+  border: none;
 
   font-size: 0.8rem;
 
-  position: relative;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const IonBtnBox = styled.div`
@@ -124,3 +142,5 @@ const StyledIonButton = styled(IonButton)`
   --box-shadow: none;
   width: 9rem;
 `;
+
+const StyledLock = styled(LockImage)``;
