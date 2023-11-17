@@ -75,7 +75,7 @@ const SignupPage = () => {
 
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
-          <StyledIdInputBox isOkNickname={isOkNickname}>
+          <StyledIdInputBox $isOkNickname={isOkNickname}>
             <StyledInput
               type="text"
               value={id}
@@ -89,7 +89,7 @@ const SignupPage = () => {
           ) : (
             <StyledAlertDiv>중복된 닉네임입니다.</StyledAlertDiv>
           )}
-          <StyledPasswordInputBox isDifferent={isDifferent}>
+          <StyledPasswordInputBox $isDifferent={isDifferent}>
             <StyledInput
               type="password"
               value={password}
@@ -100,7 +100,7 @@ const SignupPage = () => {
             />
             <StyledLock isOpen={false} />
           </StyledPasswordInputBox>
-          <StyledPasswordInputBox isDifferent={isDifferent}>
+          <StyledPasswordInputBox $isDifferent={isDifferent}>
             <StyledInput
               type="password"
               value={repassword}
@@ -163,7 +163,7 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const StyledIdInputBox = styled.div<{ isOkNickname: boolean }>`
+const StyledIdInputBox = styled.div<{ $isOkNickname: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -173,11 +173,11 @@ const StyledIdInputBox = styled.div<{ isOkNickname: boolean }>`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid ${(props) => (props?.isOkNickname ? "#f1f1f1" : "#FC8787")};
+  border: 2px solid ${(props) => (props?.$isOkNickname ? "#f1f1f1" : "#FC8787")};
   border-radius: 1rem;
 `;
 
-const StyledPasswordInputBox = styled.div<{ isDifferent: boolean }>`
+const StyledPasswordInputBox = styled.div<{ $isDifferent: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -187,7 +187,7 @@ const StyledPasswordInputBox = styled.div<{ isDifferent: boolean }>`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid ${(props) => (props?.isDifferent ? "#FC8787" : "#f1f1f1")};
+  border: 2px solid ${(props) => (props?.$isDifferent ? "#FC8787" : "#f1f1f1")};
   border-radius: 1rem;
 `;
 
