@@ -7,12 +7,31 @@ import { Chart } from "../../assets/profile/Chart";
 import ProfileOngoingGoalBar from "../../components/ProfileOngoingGoalBar";
 import ProfileCompletedGoalBar from "../../components/ProfileCompletedGoalBar";
 import Checked from "../../assets/profile/Checked";
-import { IonContent, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonPage } from "@ionic/react";
 import { customAxios } from "../../lib/customAxios";
 import { DoingPlan } from "../../types/DoingPlan";
 import { DonePlan } from "../../types/DonePlan";
+import storage from "../../utils/storage";
+import { useIonRouter } from "@ionic/react";
+import { Loading } from "../../assets/loading/Loading";
 
 const ProfilePage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId === -1 && window.location.pathname === "/profile") {
+      console.log(window.location.pathname);
+      ionRouter.push("/login");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
+  const [isLoadingOngoingGoalList, setIsLoadingOngoingGoalList] =
+    useState<boolean>(true);
+  const [isLoadingCompleteGoalList, setIsLoadingCompleteGoalList] =
+    useState<boolean>(true);
+
   const [doingPlan, setDoingPlan] = useState<DoingPlan>({
     yearPlans: [],
     shortPlans: [],
@@ -30,11 +49,13 @@ const ProfilePage = () => {
         console.log("DoingPlans: ");
         console.log(res.data);
         setDoingPlan(res.data);
+        setIsLoadingOngoingGoalList(false);
       })
       .catch((error) => {
         console.log(window.location.hostname);
         console.log("진행 목록 가져오기 실패");
         console.log(error);
+        setIsLoadingOngoingGoalList(false);
       });
   };
   // 완료 목록 가져오기
@@ -46,16 +67,26 @@ const ProfilePage = () => {
         console.log("DonePlans: ");
         console.log(res.data);
         setDonePlan(res.data);
+        setIsLoadingCompleteGoalList(false);
       })
       .catch((error) => {
         console.log(window.location.hostname);
         console.log("완료 목록 가져오기 실패");
         console.log(error);
+        setIsLoadingCompleteGoalList(false);
       });
   };
+
+  const handleLogout = () => {
+    storage.remove("userData");
+    ionRouter.push("/login");
+  };
+
   useEffect(() => {
-    getDoingPlans();
-    getDonePlans();
+    if (userData.userId !== -1) {
+      getDoingPlans();
+      getDonePlans();
+    }
   }, []);
 
   return (
@@ -63,7 +94,10 @@ const ProfilePage = () => {
       <ContentBaseDiv>
         <UserInfoTopDiv>
           <CloudCircleFrame CloudImg={Cloud01} />
-          <StyledTextName>구르미</StyledTextName>
+          <StyledTextName>{userData.nickname}</StyledTextName>
+          <LogoutButton size="small" onClick={() => handleLogout()}>
+            로그아웃
+          </LogoutButton>
         </UserInfoTopDiv>
         <UserInfoMiddleDiv>
           <OngoingGoalTitleBox>
@@ -114,7 +148,13 @@ const ProfilePage = () => {
             <></>
           )}
           {doingPlan?.yearPlans.length + doingPlan?.shortPlans.length === 0 ? (
-            <EmptyGoalBox>아직 진행 중인 목표가 없습니다</EmptyGoalBox>
+            <EmptyGoalBox>
+              {isLoadingOngoingGoalList ? (
+                <Loading />
+              ) : (
+                "아직 진행 중인 목표가 없습니다"
+              )}
+            </EmptyGoalBox>
           ) : (
             <></>
           )}
@@ -146,8 +186,15 @@ const ProfilePage = () => {
           ) : (
             <></>
           )}
+
           {donePlan?.yearPlans.length + donePlan?.shortPlans.length === 0 ? (
-            <EmptyGoalBox>아직 달성한 목표가 없습니다</EmptyGoalBox>
+            <EmptyGoalBox>
+              {isLoadingCompleteGoalList ? (
+                <Loading />
+              ) : (
+                "아직 달성한 목표가 없습니다"
+              )}
+            </EmptyGoalBox>
           ) : (
             <></>
           )}
@@ -275,15 +322,6 @@ const CompletedGoalTitleBox = styled.div`
   width: 90%;
 `;
 
-const CompletedGoalBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  height: 5.5rem;
-  width: 80%;
-`;
-
 const EmptyGoalBox = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -296,4 +334,24 @@ const EmptyGoalBox = styled.div`
   font-size: 0.9rem;
 
   width: 90%;
+`;
+
+const LogoutButton = styled(IonButton)`
+  display: flex;
+  align-items: center;
+
+  text-align: center;
+  font-size: 0.7rem;
+
+  --color: #5c5c5c;
+  --color-activated: #ffffff;
+  --background: #f1f1f1;
+  --background-activated: #ffb8ae;
+  --background-focused: #ffb8ae;
+  --box-shadow: none;
+  --border-radius: 1rem;
+  height: 0.7rem;
+
+  border: 0;
+  border-radius: 8px;
 `;

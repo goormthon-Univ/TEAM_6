@@ -11,8 +11,21 @@ import Caution from "../../assets/collection/Caution";
 import CollectionCautionModal from "../../components/CollectionCautionModal";
 import { customAxios } from "../../lib/customAxios";
 import { CloudList } from "../../types/CloudList";
+import storage from "../../utils/storage";
+import { useIonRouter } from "@ionic/react";
 
 const CollectionPage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId === -1 && window.location.pathname === "/collection") {
+      console.log(window.location.pathname);
+      ionRouter.push("/login");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
   const [miniCloudList, setMiniCloudList] = useState<CloudList>({
     clouds: [
       { image_num: 1, cloud_id: 1 },
@@ -61,7 +74,9 @@ const CollectionPage = () => {
   };
 
   useEffect(() => {
-    getCloudList();
+    if (userData.userId !== -1) {
+      getCloudList();
+    }
   }, []);
 
   return (

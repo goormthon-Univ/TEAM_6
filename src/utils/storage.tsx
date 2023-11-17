@@ -6,8 +6,9 @@ const storage = {
     localStorage.setItem(key, JSON.stringify(value));
   },
   get: (key: string): UserData => {
-    const defaultValue = {
+    const defaultValue: UserData = {
       userId: -1,
+      nickname: "구르미",
     };
     const value = localStorage.getItem(key);
     return (value ? JSON.parse(value) : defaultValue) as UserData;

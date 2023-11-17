@@ -1,18 +1,28 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LockImage from "../../assets/login/LockImage";
 import { customAxios } from "../../lib/customAxios";
-import { useHistory } from "react-router";
 import storage from "../../utils/storage";
 import { UserData } from "../../types/UserData";
+import { useIonRouter } from "@ionic/react";
 import mainImg from "../../assets/login/mainImg.png";
 
 const LoginPage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId !== -1 && window.location.pathname === "/login") {
+      console.log(window.location.pathname);
+      ionRouter.push("/main");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoginFailed, setIsLoginFailed] = useState<boolean>(false);
-  const history = useHistory();
 
   const requestLogin = async () => {
     await customAxios
@@ -24,8 +34,11 @@ const LoginPage = () => {
         console.log("로그인 성공");
         console.log(res.data);
         setIsLoginFailed(false);
-        resisterloginData(res.data);
-        history.push("/main");
+        resisterloginData({
+          userId: res.data.userId,
+          nickname: id,
+        });
+        ionRouter.push("/main");
       })
       .catch((error) => {
         console.log("로그인 실패");
@@ -82,7 +95,9 @@ const LoginPage = () => {
           </IonBtnBox>
         </form>
         <StyledLinkBox>
-          <StyledLink href="/signup">회원가입</StyledLink>
+          <StyledLink onClick={() => ionRouter.push("/signup")}>
+            회원가입
+          </StyledLink>
         </StyledLinkBox>
       </StyledContent>
     </BaseDiv>
@@ -192,7 +207,7 @@ const StyledLinkBox = styled.div`
   text-align: right;
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled.div`
   text-decoration: none;
 
   text-align: right;

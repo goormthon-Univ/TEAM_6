@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
 import LockImage from "../../assets/login/LockImage";
@@ -7,15 +7,25 @@ import { customAxios } from "../../lib/customAxios";
 import { Link, useHistory } from "react-router-dom";
 import { useIonRouter } from "@ionic/react";
 import mainImg from "../../assets/login/mainImg.png";
+import storage from "../../utils/storage";
 
 const SignupPage = () => {
+  const ionRouter = useIonRouter();
+  const userData = storage.get("userData");
+  useEffect(() => {
+    if (userData.userId !== -1 && window.location.pathname === "/signup") {
+      console.log(window.location.pathname);
+      ionRouter.push("/main");
+    } else {
+      console.log("로그인?", userData);
+    }
+  }, [window.location.pathname]);
+
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
   const [isDifferent, setIsDifferent] = useState<boolean>(false);
   const [isOkNickname, setIsOkNickname] = useState<boolean>(true);
-  const history = useHistory();
-  const ionRouter = useIonRouter();
 
   const requestSignup = async () => {
     await customAxios
@@ -36,7 +46,6 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ionRouter.push("/login");
     if (password === repassword) {
       setIsDifferent(false);
     } else {
@@ -123,7 +132,9 @@ const SignupPage = () => {
         </form>
 
         <StyledLinkBox>
-          <StyledLink href="/login">로그인</StyledLink>
+          <StyledLink onClick={() => ionRouter.push("/login")}>
+            로그인
+          </StyledLink>
         </StyledLinkBox>
       </StyledContent>
     </BaseDiv>
@@ -246,7 +257,7 @@ const StyledLinkBox = styled.div`
   text-align: right;
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled.div`
   text-decoration: none;
 
   text-align: right;
