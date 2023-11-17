@@ -17,10 +17,15 @@ function TodayTodo({day, todo, isDone, isPass}: Props) {
       <TodoContainer>
         <TodoBox>
           <DayBox>{day}</DayBox>
-          <TodoCheck color='medium'>{todo}</TodoCheck>
+          <TodoCheck value={isDone} color='medium' onIonChange={(e) => {
+            console.log(e.detail.value);
+            
+          }}>{todo}</TodoCheck>
         </TodoBox>
         <PassBox>
-          <PassCheck color='medium'>😔 오늘은 사정이 있어서 못했어요</PassCheck>
+          <PassCheck value={isPass} color='medium' onIonChange={(e) => {
+            console.log(e.detail.value);
+          }}>😔 오늘은 사정이 있어서 못했어요</PassCheck>
         </PassBox>
       </TodoContainer>
     </Container>

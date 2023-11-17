@@ -27,13 +27,13 @@ function YearlyInput({isYearly}: Props) {
 
         <ObjectInputTitle numbering={3} title="월 별 목표" />
         { [1, 2, 3, 4, 5, 6].map((e) => (
-          <MonthlyObjectInput month={e} />
+          <MonthlyObjectInput month={e} key={'month' + e} />
         ))}
   
         <Caution>* 반 년이 지난 후 나머지 목표는 반 년 이후에 쓸 거예요!</Caution>
         <ObjectInputTitle numbering={4} title="일 별 목표" />
         { ['월', '화', '수', '목', '금', '토', '일'].map((e) => (
-          <DailyInput day={e} />
+          <DailyInput day={e} key={'day' + e} />
         ))}
       </Container>
     )
