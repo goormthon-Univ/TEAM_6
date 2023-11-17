@@ -11,6 +11,7 @@ import styled from "styled-components";
 import DownArrow from "../assets/collection/DownArrow";
 import CollectionCloudCard from "./CollectionCloudCard";
 import { Cloud } from "../types/CloudList";
+import { Loading } from "../assets/loading/Loading";
 
 interface CollectionModalProps {
   modal: RefObject<HTMLIonModalElement>;
@@ -18,6 +19,7 @@ interface CollectionModalProps {
   title: string;
   GoalList: Cloud[];
   type: string;
+  isLoading: boolean;
 }
 
 const CollectionModal = ({
@@ -26,6 +28,7 @@ const CollectionModal = ({
   title,
   GoalList,
   type,
+  isLoading,
 }: CollectionModalProps) => {
   const [items, setItems] = useState<string[]>([]);
   useEffect(() => {
@@ -59,39 +62,49 @@ const CollectionModal = ({
         </ModalTitleBox>
         <IonContent>
           <IonList>
-            <ModalContentBox>
-              {GoalList ? (
-                GoalList.map(({ image_num, cloud_id }, index) => (
-                  <CollectionCloudCard
-                    imgId={image_num}
-                    name={
-                      type === "cloud"
-                        ? "구름 No." + cloud_id
-                        : "미니 구름 No." + cloud_id
-                    }
-                    key={index}
-                  />
-                ))
-              ) : (
-                <></>
-              )}
-              {items ? (
-                items.map((name, index) => (
-                  <CollectionCloudCard imgId={0} name={name} key={index} />
-                ))
-              ) : (
-                <></>
-              )}
-            </ModalContentBox>
+            {isLoading ? (
+              <ModalContentBox>
+                <Loading />
+              </ModalContentBox>
+            ) : (
+              <ModalContentBox>
+                {GoalList ? (
+                  GoalList.map(({ image_num, cloud_id }, index) => (
+                    <CollectionCloudCard
+                      imgId={image_num}
+                      name={
+                        type === "cloud"
+                          ? "구름 No." + cloud_id
+                          : "미니 구름 No." + cloud_id
+                      }
+                      key={index}
+                    />
+                  ))
+                ) : (
+                  <></>
+                )}
+                {items ? (
+                  items.map((name, index) => (
+                    <CollectionCloudCard imgId={0} name={name} key={index} />
+                  ))
+                ) : (
+                  <></>
+                )}
+              </ModalContentBox>
+            )}
           </IonList>
-          <IonInfiniteScroll
-            onIonInfinite={(ev) => {
-              getMoreCloud();
-              setTimeout(() => ev.target.complete(), 2000);
-            }}
-          >
-            <IonInfiniteScrollContent></IonInfiniteScrollContent>
-          </IonInfiniteScroll>
+          {isLoading ? (
+            <></>
+          ) : (
+            <IonInfiniteScroll
+              onIonInfinite={(ev) => {
+                getMoreCloud();
+                setTimeout(() => ev.target.complete(), 2000);
+              }}
+            >
+              <IonInfiniteScrollContent></IonInfiniteScrollContent>
+            </IonInfiniteScroll>
+          )}
         </IonContent>
       </ModalContentContainer>
     </StyledIonModal>
