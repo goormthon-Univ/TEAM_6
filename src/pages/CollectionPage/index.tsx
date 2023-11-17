@@ -26,21 +26,13 @@ const CollectionPage = () => {
     }
   }, [window.location.pathname]);
 
+  const [isLoadingMiniCloud, setIsLoadingMiniCloud] = useState<boolean>(true);
+  const [isLoadingCloud, setIsLoadingCloud] = useState<boolean>(true);
   const [miniCloudList, setMiniCloudList] = useState<CloudList>({
-    clouds: [
-      { image_num: 1, cloud_id: 1 },
-      { image_num: 2, cloud_id: 2 },
-      { image_num: 3, cloud_id: 3 },
-      { image_num: 4, cloud_id: 4 },
-    ],
+    clouds: [],
   });
   const [cloudList, setCloudList] = useState<CloudList>({
-    clouds: [
-      { image_num: 5, cloud_id: 1 },
-      { image_num: 6, cloud_id: 2 },
-      { image_num: 7, cloud_id: 3 },
-      { image_num: 8, cloud_id: 4 },
-    ],
+    clouds: [],
   });
   const miniCloudModal = useRef<HTMLIonModalElement>(null);
   const CloudModal = useRef<HTMLIonModalElement>(null);
@@ -55,10 +47,12 @@ const CollectionPage = () => {
         console.log("미니구름 컬렉션");
         console.log(res.data);
         setMiniCloudList(res.data);
+        setIsLoadingMiniCloud(false);
       })
       .catch((error) => {
         console.log("미니 구름 컬렉션 가져오기 실패");
         console.log(error);
+        setIsLoadingMiniCloud(false);
       });
     await customAxios
       .get("/collection?type=3")
@@ -66,10 +60,12 @@ const CollectionPage = () => {
         console.log("구름 컬렉션");
         console.log(res.data);
         setCloudList(res.data);
+        setIsLoadingCloud(false);
       })
       .catch((error) => {
         console.log("구름 컬렉션 가져오기 실패");
         console.log(error);
+        setIsLoadingCloud(false);
       });
   };
 
@@ -112,6 +108,7 @@ const CollectionPage = () => {
         title="구름"
         GoalList={cloudList?.clouds}
         type="cloud"
+        isLoading={isLoadingCloud}
       />
       <CollectionModal
         modal={miniCloudModal}
@@ -119,6 +116,7 @@ const CollectionPage = () => {
         title="미니 구름"
         GoalList={miniCloudList?.clouds}
         type="miniCloud"
+        isLoading={isLoadingMiniCloud}
       />
       <CollectionCautionModal
         modal={CloudCautionModal}
