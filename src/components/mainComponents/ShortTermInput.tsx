@@ -6,17 +6,12 @@ import ObjectSubTitle from './ObjectSubTitle';
 import { IonLabel } from '@ionic/react';
 import MonthSelectButton from './MonthSelectButton';
 import DailyInput from './DailyInput';
-import CancelConfirmBtn from './CancelConfirmBtn';
 
 type Props = {
   isYearly: boolean;
 }
 
 function ShortTermInput({isYearly}: Props) {
-
-  const setShortPlan = () => {
-    
-  }
 
   return ( !isYearly &&
     <Container>
@@ -52,7 +47,7 @@ function ShortTermInput({isYearly}: Props) {
   )
 }
 
-const Container = styled.div`
+const Container = styled.form`
   margin: 0 auto;
 `;
 
