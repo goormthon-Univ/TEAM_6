@@ -14,7 +14,6 @@ const SignupPage = () => {
   const [repassword, setRepassword] = useState<string>("");
   const [isDifferent, setIsDifferent] = useState<boolean>(false);
   const [isOkNickname, setIsOkNickname] = useState<boolean>(true);
-  const history = useHistory();
   const ionRouter = useIonRouter();
 
   const requestSignup = async () => {
@@ -36,7 +35,6 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ionRouter.push("/login");
     if (password === repassword) {
       setIsDifferent(false);
     } else {
@@ -123,7 +121,9 @@ const SignupPage = () => {
         </form>
 
         <StyledLinkBox>
-          <StyledLink href="/login">로그인</StyledLink>
+          <StyledLink onClick={() => ionRouter.push("/login")}>
+            로그인
+          </StyledLink>
         </StyledLinkBox>
       </StyledContent>
     </BaseDiv>
@@ -246,7 +246,7 @@ const StyledLinkBox = styled.div`
   text-align: right;
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled.div`
   text-decoration: none;
 
   text-align: right;
