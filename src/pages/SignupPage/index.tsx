@@ -6,6 +6,7 @@ import LockImage from "../../assets/login/LockImage";
 import { customAxios } from "../../lib/customAxios";
 import { Link, useHistory } from "react-router-dom";
 import { useIonRouter } from "@ionic/react";
+import mainImg from "../../assets/login/mainImg.png";
 
 const SignupPage = () => {
   const [id, setId] = useState<string>("");
@@ -68,7 +69,8 @@ const SignupPage = () => {
   return (
     <BaseDiv>
       <StyledHeader>
-        <MainImage />
+        <img src={mainImg} alt="Login" />
+        {/* <MainImage /> */}
       </StyledHeader>
 
       <StyledContent>
