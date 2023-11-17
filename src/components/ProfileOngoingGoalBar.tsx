@@ -42,7 +42,7 @@ const ProfileOngoingGoalBar = ({
   const setRequestDailyPlanElement = async (prop: DailyPlanRequest) => {
     if (type === "short") {
       await customAxios
-        .put(`/DailyPlan/shortPlan/${id}`, { data: prop })
+        .put(`/DailyPlan/shortPlan/${id}`, prop)
         .then((res) => {
           console.log("short 고정 주 목표 설정 성공");
           console.log(res);
@@ -54,7 +54,7 @@ const ProfileOngoingGoalBar = ({
         });
     } else if (type === "year") {
       await customAxios
-        .put(`/DailyPlan/yearPlan/${id}`, { data: prop })
+        .put(`/DailyPlan/yearPlan/${id}`, prop)
         .then((res) => {
           console.log("year 고정 주 목표 설정 성공");
           console.log(res);
