@@ -34,7 +34,10 @@ const LoginPage = () => {
         console.log("로그인 성공");
         console.log(res.data);
         setIsLoginFailed(false);
-        resisterloginData(res.data);
+        resisterloginData({
+          userId: res.data.userId,
+          nickname: id,
+        });
         ionRouter.push("/main");
       })
       .catch((error) => {

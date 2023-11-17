@@ -94,7 +94,7 @@ const ProfilePage = () => {
       <ContentBaseDiv>
         <UserInfoTopDiv>
           <CloudCircleFrame CloudImg={Cloud01} />
-          <StyledTextName>구르미</StyledTextName>
+          <StyledTextName>{userData.nickname}</StyledTextName>
           <LogoutButton size="small" onClick={() => handleLogout()}>
             로그아웃
           </LogoutButton>
