@@ -3,15 +3,16 @@ import styled from 'styled-components';
 
 type Props = {
     day: string;
+    name?: string;
 }
 
-function DailyInput({day}: Props) {
+function DailyInput({day, name}: Props) {
   return (
     <Container>
         <DayBox>
             { day }
         </DayBox>
-        <DayInputBox placeholder={day + '요일의 목표를 적어주세요!'} />
+        <DayInputBox name={name} placeholder={day + '요일의 목표를 적어주세요!'} />
     </Container>
   )
 }

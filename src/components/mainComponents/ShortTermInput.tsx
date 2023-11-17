@@ -31,7 +31,7 @@ function ShortTermInput({isYearly}: Props) {
       </MonthSelectContainer>
 
       <ObjectInputTitle numbering={2} title="단기 목표" />
-      <ObjectInputBox content="해당 기간 동안 이루고 싶은 목표를 적어주세요!"/>
+      <ObjectInputBox name='short' content="해당 기간 동안 이루고 싶은 목표를 적어주세요!"/>
       
       <ObjectSubTitle>
         <>

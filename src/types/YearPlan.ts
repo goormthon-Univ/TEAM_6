@@ -11,6 +11,10 @@ export interface YearPlan {
     miniCloud: number,
     done: boolean,
     exception: boolean,
+
+    // 오류 해결을 위한 타입 추가
+    short_plan_id?: number,
+    shortPlan?: string,
 }
 
 export interface MonthlyPlanInput {
