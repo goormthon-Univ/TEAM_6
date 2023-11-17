@@ -133,7 +133,7 @@ const ProfileOngoingGoalBar = ({
           size="small"
           onClick={() => setIsEdit(false)}
         >
-          고정 주 목표 해지
+          고정 주 목표 수정
         </GoalCancleButton>
         <SpaceSpan />
         <SpaceSpan />
