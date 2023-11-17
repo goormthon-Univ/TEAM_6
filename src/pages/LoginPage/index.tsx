@@ -17,10 +17,8 @@ const LoginPage = () => {
   const requestLogin = async () => {
     await customAxios
       .post("/auth/login", {
-        data: {
-          nickname: id,
-          password: password,
-        },
+        nickname: id,
+        password: password,
       })
       .then((res) => {
         console.log("로그인 성공");
