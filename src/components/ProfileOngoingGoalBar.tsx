@@ -5,7 +5,11 @@ import styled from "styled-components";
 import ProfileEditModar from "./ProfileEditModar";
 import ProfileDeleteModar from "./ProfileDeleteModar";
 import { customAxios } from "../lib/customAxios";
-import { DailyPlan, DailyPlanElement } from "../types/DailyPlan";
+import {
+  DailyPlan,
+  DailyPlanElement,
+  DailyPlanRequest,
+} from "../types/DailyPlan";
 
 interface ProfileOngoingGoalBarProps {
   id: string;
@@ -13,6 +17,7 @@ interface ProfileOngoingGoalBarProps {
   percentageValue: string;
   period: string;
   type: string;
+  tempId: string;
 }
 
 const ProfileOngoingGoalBar = ({
@@ -21,6 +26,7 @@ const ProfileOngoingGoalBar = ({
   percentageValue,
   period,
   type,
+  tempId,
 }: ProfileOngoingGoalBarProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -33,13 +39,14 @@ const ProfileOngoingGoalBar = ({
     }
   }, []);
 
-  const setRequestDailyPlanElement = async (prop: DailyPlanElement[]) => {
+  const setRequestDailyPlanElement = async (prop: DailyPlanRequest) => {
     if (type === "short") {
       await customAxios
         .put(`/DailyPlan/shortPlan/${id}`, { data: prop })
         .then((res) => {
           console.log("short 고정 주 목표 로드 성공");
           console.log(res);
+          dismissEditGoalModar();
         })
         .catch((error) => {
           console.log("short 고정 주 목표 로드 실패");
@@ -51,6 +58,7 @@ const ProfileOngoingGoalBar = ({
         .then((res) => {
           console.log("year 고정 주 목표 설정 성공");
           console.log(res);
+          dismissEditGoalModar();
         })
         .catch((error) => {
           console.log("year 고정 주 목표 설정 실패");
@@ -61,10 +69,9 @@ const ProfileOngoingGoalBar = ({
     }
   };
 
-  const handleSubmitWeekGoal = async (prop: DailyPlanElement[]) => {
+  const handleSubmitWeekGoal = async (prop: DailyPlanRequest) => {
     await setRequestDailyPlanElement(prop);
     console.log(prop);
-    dismissEditGoalModar();
   };
 
   const handleDeleteGoal = async () => {
@@ -107,7 +114,7 @@ const ProfileOngoingGoalBar = ({
     <BaseDiv>
       <GoalTitle>
         <GoalSmallBox>
-          <DescriptionBox>목표{id}</DescriptionBox>
+          <DescriptionBox>목표{tempId}</DescriptionBox>
           <SpaceSpan />
           {goal}
         </GoalSmallBox>
@@ -122,22 +129,22 @@ const ProfileOngoingGoalBar = ({
       </GoalParameterBox>
       <GoalBtnContainer>
         <GoalCancleButton
-          id={`editGoal${id}`}
+          id={`editGoal${id}${type}`}
           size="small"
           onClick={() => setIsEdit(false)}
         >
-          고정 주 목표 해지
+          고정 주 목표 수정
         </GoalCancleButton>
         <SpaceSpan />
         <SpaceSpan />
-        <GoalDeleteButton id={`deleteGoal${id}`} size="small">
+        <GoalDeleteButton id={`deleteGoal${id}${type}`} size="small">
           목표 삭제
         </GoalDeleteButton>
       </GoalBtnContainer>
 
       <ProfileEditModar
         modal={editGoalModal}
-        openId={`editGoal${id}`}
+        openId={`editGoal${id}${type}`}
         isEdit={isEdit}
         handleSubmit={handleSubmitWeekGoal}
         handleIsEdit={handleIsEdit}
@@ -147,7 +154,7 @@ const ProfileOngoingGoalBar = ({
       />
       <ProfileDeleteModar
         modal={deleteGoalModal}
-        openId={`deleteGoal${id}`}
+        openId={`deleteGoal${id}${type}`}
         handle={handleDeleteGoal}
         dismiss={dismissDeleteGoalModal}
       />
@@ -259,6 +266,7 @@ const GoalCancleButton = styled(IonButton)`
   --background: #f1f1f1;
   --background-activated: #ffb8ae;
   --background-focused: #ffb8ae;
+  --box-shadow: none;
 
   height: 0.7rem;
 
@@ -277,6 +285,7 @@ const GoalDeleteButton = styled(IonButton)`
   --background: #9c9c9cf1;
   --background-activated: #5c5c5c;
   --background-focused: #5c5c5c;
+  --box-shadow: none;
 
   height: 1.2rem;
 

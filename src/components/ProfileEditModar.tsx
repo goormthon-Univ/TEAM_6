@@ -3,14 +3,18 @@ import { IonButton, IonInput, IonModal } from "@ionic/react";
 import { RefObject } from "react";
 import styled from "styled-components";
 import CautionRed from "../assets/collection/CautionRed";
-import { DailyPlan, DailyPlanElement } from "../types/DailyPlan";
+import {
+  DailyPlan,
+  DailyPlanElement,
+  DailyPlanRequest,
+} from "../types/DailyPlan";
 import { customAxios } from "../lib/customAxios";
 
 interface ProfileEditModarProps {
   modal: RefObject<HTMLIonModalElement>;
   openId: string;
   isEdit: boolean;
-  handleSubmit: (prop: DailyPlanElement[]) => void;
+  handleSubmit: (prop: DailyPlanRequest) => void;
   handleIsEdit: () => void;
   dismiss: () => void;
   id: string;
@@ -36,37 +40,43 @@ const ProfileEditModar = ({
   const [sat, setSat] = useState<string>("불러오기 실패");
   const [sun, setSun] = useState<string>("불러오기 실패");
 
-  const handleSubmitDailyPlanElement = () => {
-    handleSubmit([
-      {
-        day: "MONDAY",
-        plan: mon,
-      },
-      {
-        day: "TUESDAY",
-        plan: tue,
-      },
-      {
-        day: "WEDNESDAY",
-        plan: wed,
-      },
-      {
-        day: "THURSDAY",
-        plan: thu,
-      },
-      {
-        day: "FRIDAY",
-        plan: fri,
-      },
-      {
-        day: "SATURDAY",
-        plan: sat,
-      },
-      {
-        day: "SUNDAY",
-        plan: sun,
-      },
-    ]);
+  const handleSubmitDailyPlanElement = (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    handleSubmit({
+      dailyPlans: [
+        {
+          day: 1,
+          plan: mon,
+        },
+        {
+          day: 2,
+          plan: tue,
+        },
+        {
+          day: 3,
+          plan: wed,
+        },
+        {
+          day: 4,
+          plan: thu,
+        },
+        {
+          day: 5,
+          plan: fri,
+        },
+        {
+          day: 6,
+          plan: sat,
+        },
+        {
+          day: 7,
+          plan: sun,
+        },
+      ],
+    });
   };
 
   useEffect(() => {
@@ -151,7 +161,7 @@ const ProfileEditModar = ({
   return (
     <StyledIonModal ref={modal} trigger={openId}>
       {isEdit ? (
-        <form onSubmit={handleSubmitDailyPlanElement} action="">
+        <form onSubmit={(e) => handleSubmitDailyPlanElement(e)} action="">
           <EditDiv>
             <EditTitleBox>
               <EditTitleTextBox>일 별 목표</EditTitleTextBox>
@@ -379,7 +389,7 @@ const EditSubTitleTextBox = styled.div`
 `;
 const EditContentTextBox = styled.input`
   margin-top: 0.3rem;
-  padding: 0.5rem 0.5rem;
+  padding: 0.9rem 0.5rem;
 
   display: flex;
   justify-content: center;
@@ -387,6 +397,8 @@ const EditContentTextBox = styled.input`
   text-align: center;
 
   width: 90%;
+
+  font-size: 0.9rem;
 
   background-color: #f1f1f1;
   color: #9c9c9c;

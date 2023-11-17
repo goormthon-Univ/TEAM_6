@@ -72,7 +72,7 @@ const ProfilePage = () => {
             진행중인 목표
           </OngoingGoalTitleBox>
           {doingPlan?.shortPlans ? (
-            doingPlan.shortPlans.map((plan) => (
+            doingPlan.shortPlans.map((plan, index) => (
               <OngoingGoalBox key={plan.shortPlanId}>
                 <ProfileOngoingGoalBar
                   id={String(plan.shortPlanId)}
@@ -82,6 +82,7 @@ const ProfilePage = () => {
                   }
                   period={String(plan.period) + "개월"}
                   type="short"
+                  tempId={String(index + 1)}
                 />
               </OngoingGoalBox>
             ))
@@ -89,7 +90,7 @@ const ProfilePage = () => {
             <></>
           )}
           {doingPlan?.yearPlans ? (
-            doingPlan.yearPlans.map((plan) => (
+            doingPlan.yearPlans.map((plan, index) => (
               <OngoingGoalBox key={plan.yearPlanId}>
                 <ProfileOngoingGoalBar
                   id={String(plan.yearPlanId)}
@@ -99,6 +100,13 @@ const ProfilePage = () => {
                   }
                   period="1년"
                   type="year"
+                  tempId={String(
+                    index +
+                      1 +
+                      (doingPlan?.yearPlans?.length
+                        ? doingPlan.yearPlans.length
+                        : 0)
+                  )}
                 />
               </OngoingGoalBox>
             ))
@@ -106,7 +114,7 @@ const ProfilePage = () => {
             <></>
           )}
           {doingPlan?.yearPlans.length + doingPlan?.shortPlans.length === 0 ? (
-            <div>아무것도 없음</div>
+            <EmptyGoalBox>아직 진행 중인 목표가 없습니다</EmptyGoalBox>
           ) : (
             <></>
           )}
@@ -139,7 +147,7 @@ const ProfilePage = () => {
             <></>
           )}
           {donePlan?.yearPlans.length + donePlan?.shortPlans.length === 0 ? (
-            <div>아무것도 없음</div>
+            <EmptyGoalBox>아직 달성한 목표가 없습니다</EmptyGoalBox>
           ) : (
             <></>
           )}
@@ -193,12 +201,7 @@ const StyledTextName = styled.div`
   width: 8.5rem;
 
   border: 0;
-  border-bottom: 1px solid #9c9c9c;
-
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid #9c9c9c;
-  }
+  /* border-bottom: 1px solid #9c9c9c; */
 `;
 
 const UserInfoMiddleDiv = styled.div`
@@ -279,4 +282,16 @@ const CompletedGoalBox = styled.div`
 
   height: 5.5rem;
   width: 80%;
+`;
+
+const EmptyGoalBox = styled.div`
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: 90%;
 `;

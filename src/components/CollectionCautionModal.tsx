@@ -81,7 +81,7 @@ const CollectionButtonDiv = styled.div`
   text-align: center;
 
   color: #595959;
-  font-size: 1rem;
+  font-size: 0.8rem;
 
   background-color: #f1f1f1;
 
