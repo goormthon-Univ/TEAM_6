@@ -196,7 +196,7 @@ const StyledTextName = styled.div`
   background-color: white;
 
   color: #151515;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
 
   width: 8.5rem;
 
@@ -292,6 +292,8 @@ const EmptyGoalBox = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+
+  font-size: 0.9rem;
 
   width: 90%;
 `;
