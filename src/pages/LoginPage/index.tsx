@@ -127,7 +127,7 @@ const StyledInputBox = styled.div<{ isLoginFailed: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 
   height: 3.5rem;
@@ -138,6 +138,12 @@ const StyledInputBox = styled.div<{ isLoginFailed: boolean }>`
 `;
 
 const StyledInput = styled.input`
+  padding-left: 1rem;
+  padding-top: 1.1rem;
+  padding-bottom: 1.1rem;
+  margin-right: 1rem;
+  border-radius: 1rem;
+
   width: 15rem;
   border: none;
 

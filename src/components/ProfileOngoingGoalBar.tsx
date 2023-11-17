@@ -44,7 +44,7 @@ const ProfileOngoingGoalBar = ({
       await customAxios
         .put(`/DailyPlan/shortPlan/${id}`, { data: prop })
         .then((res) => {
-          console.log("short 고정 주 목표 로드 성공");
+          console.log("short 고정 주 목표 설정 성공");
           console.log(res);
           dismissEditGoalModar();
         })
@@ -186,7 +186,7 @@ const GoalSmallBox = styled.div`
 
   text-align: left;
 
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #5c5c5c;
 `;
 
