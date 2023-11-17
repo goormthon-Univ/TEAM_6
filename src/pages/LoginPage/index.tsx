@@ -1,12 +1,12 @@
 import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import styled from "styled-components";
-import MainImage from "../../assets/login/MainImage";
 import LockImage from "../../assets/login/LockImage";
 import { customAxios } from "../../lib/customAxios";
 import { useHistory } from "react-router";
 import storage from "../../utils/storage";
 import { UserData } from "../../types/UserData";
+import mainImg from "../../assets/login/mainImg.png";
 
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
@@ -17,10 +17,8 @@ const LoginPage = () => {
   const requestLogin = async () => {
     await customAxios
       .post("/auth/login", {
-        data: {
-          nickname: id,
-          password: password,
-        },
+        nickname: id,
+        password: password,
       })
       .then((res) => {
         console.log("로그인 성공");
@@ -48,12 +46,13 @@ const LoginPage = () => {
   return (
     <BaseDiv>
       <StyledHeader>
-        <MainImage />
+        <img src={mainImg} alt="Login" />
+        {/* <MainImage /> */}
       </StyledHeader>
 
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
-          <StyledInputBox isLoginFailed={isLoginFailed}>
+          <StyledInputBox $isLoginFailed={isLoginFailed}>
             <StyledInput
               type="text"
               value={id}
@@ -62,7 +61,7 @@ const LoginPage = () => {
             />
             <StyledLock isOpen={true} />
           </StyledInputBox>
-          <StyledInputBox isLoginFailed={isLoginFailed}>
+          <StyledInputBox $isLoginFailed={isLoginFailed}>
             <StyledInput
               type="password"
               value={password}
@@ -123,7 +122,7 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const StyledInputBox = styled.div<{ isLoginFailed: boolean }>`
+const StyledInputBox = styled.div<{ $isLoginFailed: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -133,7 +132,8 @@ const StyledInputBox = styled.div<{ isLoginFailed: boolean }>`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid ${(props) => (props?.isLoginFailed ? "#FC8787" : "#f1f1f1")};
+  border: 2px solid
+    ${(props) => (props?.$isLoginFailed ? "#FC8787" : "#f1f1f1")};
   border-radius: 1rem;
 `;
 

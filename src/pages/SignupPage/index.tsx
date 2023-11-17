@@ -4,7 +4,9 @@ import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
 import LockImage from "../../assets/login/LockImage";
 import { customAxios } from "../../lib/customAxios";
-import { useHistory } from "react-router";
+import { Link, useHistory } from "react-router-dom";
+import { useIonRouter } from "@ionic/react";
+import mainImg from "../../assets/login/mainImg.png";
 
 const SignupPage = () => {
   const [id, setId] = useState<string>("");
@@ -13,19 +15,18 @@ const SignupPage = () => {
   const [isDifferent, setIsDifferent] = useState<boolean>(false);
   const [isOkNickname, setIsOkNickname] = useState<boolean>(true);
   const history = useHistory();
+  const ionRouter = useIonRouter();
 
   const requestSignup = async () => {
     await customAxios
       .post("/auth/signup", {
-        data: {
-          nickname: id,
-          password: password,
-        },
+        nickname: id,
+        password: password,
       })
       .then((res) => {
         console.log("회원가입 성공");
         console.log(res.data);
-        history.push("/login");
+        ionRouter.push("/login");
       })
       .catch((error) => {
         console.log("회원가입 실패");
@@ -35,6 +36,7 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    ionRouter.push("/login");
     if (password === repassword) {
       setIsDifferent(false);
     } else {
@@ -47,35 +49,33 @@ const SignupPage = () => {
   };
 
   const checkNickname = async (): Promise<boolean> => {
-    await customAxios
+    const res = await customAxios
       .get(`/auth/${id}/exists`)
       .then((res) => {
         console.log("닉네임 체크 성공");
         console.log(res.data);
-        setIsOkNickname(
-          (res?.data?.exists ? res.data.exists : false) as boolean
-        );
-        return res.data.exists as boolean;
+        setIsOkNickname(res?.data?.exists ? false : true);
+        return res?.data?.exists ? false : true;
       })
       .catch((error) => {
-        console.log("닉네임 체크 성공");
+        console.log("닉네임 체크 실패");
         console.log(error);
         setIsOkNickname(false);
         return false;
       });
-    setIsOkNickname(false);
-    return false;
+    return res;
   };
 
   return (
     <BaseDiv>
       <StyledHeader>
-        <MainImage />
+        <img src={mainImg} alt="Login" />
+        {/* <MainImage /> */}
       </StyledHeader>
 
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
-          <StyledIdInputBox isOkNickname={isOkNickname}>
+          <StyledIdInputBox $isOkNickname={isOkNickname}>
             <StyledInput
               type="text"
               value={id}
@@ -89,7 +89,7 @@ const SignupPage = () => {
           ) : (
             <StyledAlertDiv>중복된 닉네임입니다.</StyledAlertDiv>
           )}
-          <StyledPasswordInputBox isDifferent={isDifferent}>
+          <StyledPasswordInputBox $isDifferent={isDifferent}>
             <StyledInput
               type="password"
               value={password}
@@ -100,7 +100,7 @@ const SignupPage = () => {
             />
             <StyledLock isOpen={false} />
           </StyledPasswordInputBox>
-          <StyledPasswordInputBox isDifferent={isDifferent}>
+          <StyledPasswordInputBox $isDifferent={isDifferent}>
             <StyledInput
               type="password"
               value={repassword}
@@ -163,7 +163,7 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const StyledIdInputBox = styled.div<{ isOkNickname: boolean }>`
+const StyledIdInputBox = styled.div<{ $isOkNickname: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -173,11 +173,11 @@ const StyledIdInputBox = styled.div<{ isOkNickname: boolean }>`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid ${(props) => (props?.isOkNickname ? "#f1f1f1" : "#FC8787")};
+  border: 2px solid ${(props) => (props?.$isOkNickname ? "#f1f1f1" : "#FC8787")};
   border-radius: 1rem;
 `;
 
-const StyledPasswordInputBox = styled.div<{ isDifferent: boolean }>`
+const StyledPasswordInputBox = styled.div<{ $isDifferent: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -187,7 +187,7 @@ const StyledPasswordInputBox = styled.div<{ isDifferent: boolean }>`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid ${(props) => (props?.isDifferent ? "#FC8787" : "#f1f1f1")};
+  border: 2px solid ${(props) => (props?.$isDifferent ? "#FC8787" : "#f1f1f1")};
   border-radius: 1rem;
 `;
 
