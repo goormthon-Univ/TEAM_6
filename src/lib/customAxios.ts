@@ -7,7 +7,7 @@ const host =
 
 export const customAxios: AxiosInstance = axios.create({
   baseURL: host, // 기본 서버 주소 입력
-  //   headers: {
-  //     user_id: cookies.get("access_token"),
-  //   },
+  headers: {
+    userId: 1,
+  },
 });

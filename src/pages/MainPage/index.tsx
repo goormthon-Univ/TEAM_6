@@ -20,6 +20,7 @@ import CancelConfirmBtn from "../../components/mainComponents/CancelConfirmBtn";
 import { customAxios } from "../../lib/customAxios";
 import { YearPlan } from "../../types/YearPlan";
 import { ShortPlan } from "../../types/ShortPlan";
+import dayjs from "dayjs";
 
 const MainPage = () => {
   const [isObjectExist, setIsObjectExist] = React.useState(true);
@@ -69,6 +70,34 @@ const MainPage = () => {
     console.log(currentPage, planList, currentPlan);
   }, [currentPage]);
 
+  const addPlan = async (data: unknown) => {
+    if ( isYearly ) {
+      await customAxios
+      .post("/YearPlans", data)
+      .then((res) => {
+        console.log(window.location.hostname);
+      })
+      .catch((error) => {
+        console.log(window.location.hostname);
+        console.log("1년 목표 등록 실패");
+        console.log(error);
+      });
+
+    } else {
+      await customAxios
+      .post("/ShortPlans", data)
+      .then((res) => {
+        console.log(window.location.hostname);
+
+      })
+      .catch((error) => {
+        console.log(window.location.hostname);
+        console.log("단기 목표 등록 실패");
+        console.log(error);
+      });
+    }
+  }
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -97,17 +126,17 @@ const MainPage = () => {
             </ObjectContainer>
 
             <StatusBar title="구름 완성까지" total={13} current={currentPlan?.miniCloud || 0} />
-            <CloudCount count={currentPlan?.miniCloud || 0} />
+            <CloudCount count={currentPlan?.steam || 0} />
 
-            <HumidityStatus total={7} current={currentPlan?.steam || 0} />
+            <HumidityStatus total={7} current={currentPlan?.waterDrop || 0} />
 
             { currentPlan?.monthPlan && <MonthObjectTitle object={currentPlan?.monthPlan} /> }
 
             <TodayTodo
               day={"금"}
               todo={currentPlan?.dailyPlan}
-              isDone={true}
-              isPass={false}
+              isDone={currentPlan?.done || false}
+              isPass={currentPlan?.exception || false }
               steam={currentPlan?.steam}
               waterDrop={currentPlan?.waterDrop}
               miniCloud={currentPlan?.miniCloud}
@@ -136,19 +165,56 @@ const MainPage = () => {
                 onConfirm={() => {
                   let data;
                   let form;
-                  if ( isYearly ) {
+                  if ( isYearly ) { // 1년 목표
                     form = document.forms[0].getElementsByTagName('textarea');
+                    const monthlyPlan = [];
+                    for ( let i=2 ; i < 8 ; i++ ) {
+                      monthlyPlan.push({
+                        'year' : dayjs().add(i-1, 'month').year,
+                        'month' : dayjs().add(i-1, 'month').month,
+                        'monthlyPlan' : form[i].value,
+                      })
+                    }
+                    const dailyPlan = [];
+                    for ( let i=8 ; i < form.length ; i++ ) {
+                      dailyPlan.push({
+                        'day' : i-7,
+                        'plan' : form[i].value,
+                      })
+                    }
                     data = {
                       'userId' : 1,
-                      'year' : 2023,
+                      'year' : dayjs().year,
                       'yearPlan' : form[0].value,
                       'halfPlan' : form[1].value,
+                      'monthlyPlan' : monthlyPlan,
+                      'dailyPlan' : dailyPlan,
                     }
-                  } else {
-                    form = document.forms;
-                    console.log(form);
+                  } else { // 단기 목표
+                    form = document.forms[0].getElementsByTagName('textarea');
+                    const dailyPlan = [];
+                    let period;
+                    for ( let i=0 ; i < 6 ; i++ ) {
+                      if ( document.forms[0].getElementsByTagName('input')[i].checked === true ) {
+                        period = i+1;
+                      }
+                    }
+                    for ( let i=1 ; i < 8 ; i++ ) {
+                      dailyPlan.push({
+                        'day' : i,
+                        'plan' : form[i].value,
+                      })
+                    }
+                    data = {
+                      'userId' : 1,
+                      'year' : dayjs().year,
+                      'period' : period,
+                      'shortPlan' : form[0].value,
+                      'dailyPlan' : dailyPlan,
+                    }
                   }
                   
+                  addPlan(data);
               }}/>
             </ObjectInputContainer>
           </>

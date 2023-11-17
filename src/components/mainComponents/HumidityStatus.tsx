@@ -10,7 +10,11 @@ function HumidityStatus({total, current}: Props) {
   return (
     <Container>
         <Center>
-            <img src='src/assets/main/Group 33661.png' style={{ width: '2.5rem'}}/>
+            <svg width="55" height="45" viewBox="0 0 55 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="9" r="9" fill="#FFB8AE"/>
+            <circle cx="50" cy="17" r="5" fill="#FFB8AE"/>
+            <circle cx="31.5" cy="31.5" r="13.5" fill="#FFB8AE"/>
+            </svg>
             <HumidityLabel>습도 { parseFloat((current / total).toFixed(1))*100 }%</HumidityLabel>
         </Center>
         <Wave total={total} current={current} />
