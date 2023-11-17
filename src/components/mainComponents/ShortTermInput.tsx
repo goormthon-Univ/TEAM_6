@@ -13,6 +13,11 @@ type Props = {
 }
 
 function ShortTermInput({isYearly}: Props) {
+
+  const setShortPlan = () => {
+    
+  }
+
   return ( !isYearly &&
     <Container>
       <ObjectInputTitle numbering={1} title="단기 목표" />

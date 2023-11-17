@@ -1,3 +1,5 @@
+import { DailyPlanInput } from "./DailyPlan";
+
 interface ShortPlan {
     short_plan_id: number,
     shortPlan: string,
@@ -7,4 +9,12 @@ interface ShortPlan {
     miniCloud: number,
     done: boolean,
     exception: boolean,
+}
+
+export interface ShortPlanInput {
+    userId: number,
+    year: number,
+    shortPlan: string,
+    period: number,
+    dailyPlan: DailyPlanInput[],
 }
