@@ -1,4 +1,4 @@
-import { IonButton, IonInput, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonInput, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import styled from "styled-components";
 import MainImage from "../../assets/login/MainImage";
@@ -11,6 +11,7 @@ import { UserData } from "../../types/UserData";
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoginFailed, setIsLoginFailed] = useState<boolean>(false);
   const history = useHistory();
 
   const requestLogin = async () => {
@@ -24,11 +25,13 @@ const LoginPage = () => {
       .then((res) => {
         console.log("로그인 성공");
         console.log(res.data);
+        setIsLoginFailed(false);
         resisterloginData(res.data);
         history.push("/main");
       })
       .catch((error) => {
         console.log("로그인 실패");
+        setIsLoginFailed(true);
         console.log(error);
       });
   };
@@ -44,10 +47,13 @@ const LoginPage = () => {
   };
   return (
     <BaseDiv>
-      <MainImage />
+      <StyledHeader>
+        <MainImage />
+      </StyledHeader>
+
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
-          <StyledInputBox>
+          <StyledInputBox isLoginFailed={isLoginFailed}>
             <StyledInput
               type="text"
               value={id}
@@ -56,7 +62,7 @@ const LoginPage = () => {
             />
             <StyledLock isOpen={true} />
           </StyledInputBox>
-          <StyledInputBox>
+          <StyledInputBox isLoginFailed={isLoginFailed}>
             <StyledInput
               type="password"
               value={password}
@@ -67,10 +73,18 @@ const LoginPage = () => {
             />
             <StyledLock isOpen={false} />
           </StyledInputBox>
+          {isLoginFailed ? (
+            <StyledAlertDiv>잘못된 닉네임/비밀번호 입니다.</StyledAlertDiv>
+          ) : (
+            <></>
+          )}
           <IonBtnBox>
             <StyledIonButton type="submit">로그인</StyledIonButton>
           </IonBtnBox>
         </form>
+        <StyledLinkBox>
+          <StyledLink href="/signup">회원가입</StyledLink>
+        </StyledLinkBox>
       </StyledContent>
     </BaseDiv>
   );
@@ -84,8 +98,18 @@ const BaseDiv = styled(IonPage)`
   align-items: center;
   justify-content: center;
 
+  background-color: white;
+
   width: 100%;
   height: 100%;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 7rem;
 `;
 
 const StyledContent = styled.div`
@@ -99,7 +123,7 @@ const StyledContent = styled.div`
   height: 25rem;
 `;
 
-const StyledInputBox = styled.div`
+const StyledInputBox = styled.div<{ isLoginFailed: boolean }>`
   margin-top: 0.8rem;
 
   display: flex;
@@ -109,7 +133,7 @@ const StyledInputBox = styled.div`
   height: 3.5rem;
   width: 18rem;
 
-  border: 2px solid #f1f1f1;
+  border: 2px solid ${(props) => (props?.isLoginFailed ? "#FC8787" : "#f1f1f1")};
   border-radius: 1rem;
 `;
 
@@ -144,3 +168,30 @@ const StyledIonButton = styled(IonButton)`
 `;
 
 const StyledLock = styled(LockImage)``;
+
+const StyledAlertDiv = styled.div`
+  width: 18rem;
+  text-align: right;
+  color: #fc8787;
+  font-size: 0.7rem;
+`;
+
+const StyledLinkBox = styled.div`
+  margin-top: 0.2rem;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 18rem;
+  text-align: right;
+`;
+
+const StyledLink = styled.a`
+  text-decoration: none;
+
+  text-align: right;
+  color: #b4b4b4;
+  font-size: 0.8rem;
+
+  cursor: pointer;
+`;

@@ -69,7 +69,10 @@ const SignupPage = () => {
 
   return (
     <BaseDiv>
-      <MainImage />
+      <StyledHeader>
+        <MainImage />
+      </StyledHeader>
+
       <StyledContent>
         <form onSubmit={(e) => handleSubmit(e)} action="">
           <StyledIdInputBox isOkNickname={isOkNickname}>
@@ -118,6 +121,10 @@ const SignupPage = () => {
             <StyledIonButton type="submit">회원가입</StyledIonButton>
           </IonBtnBox>
         </form>
+
+        <StyledLinkBox>
+          <StyledLink href="/login">로그인</StyledLink>
+        </StyledLinkBox>
       </StyledContent>
     </BaseDiv>
   );
@@ -131,8 +138,18 @@ const BaseDiv = styled(IonPage)`
   align-items: center;
   justify-content: center;
 
+  background-color: white;
+
   width: 100%;
   height: 100%;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 7rem;
 `;
 
 const StyledContent = styled.div`
@@ -211,4 +228,24 @@ const StyledAlertDiv = styled.div`
   text-align: right;
   color: #fc8787;
   font-size: 0.7rem;
+`;
+
+const StyledLinkBox = styled.div`
+  margin-top: 0.2rem;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 18rem;
+  text-align: right;
+`;
+
+const StyledLink = styled.a`
+  text-decoration: none;
+
+  text-align: right;
+  color: #b4b4b4;
+  font-size: 0.8rem;
+
+  cursor: pointer;
 `;
