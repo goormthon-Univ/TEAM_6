@@ -14,10 +14,11 @@ import { DonePlan } from "../../types/DonePlan";
 import storage from "../../utils/storage";
 import { useIonRouter } from "@ionic/react";
 import { Loading } from "../../assets/loading/Loading";
+import { UserData } from "../../types/UserData";
 
 const ProfilePage = () => {
   const ionRouter = useIonRouter();
-  const userData = storage.get("userData");
+  const [userData, setUserData] = useState<UserData>(storage.get("userData"));
   useEffect(() => {
     if (userData.userId === -1 && window.location.pathname === "/profile") {
       console.log(window.location.pathname);
@@ -83,11 +84,17 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
+    setUserData(storage.get("userData"));
+  }, [window.location.pathname]);
+
+  useEffect(() => {
+    setIsLoadingOngoingGoalList(true);
+    setIsLoadingCompleteGoalList(true);
     if (userData.userId !== -1) {
       getDoingPlans();
       getDonePlans();
     }
-  }, []);
+  }, [userData.userId]);
 
   return (
     <BaseDiv>

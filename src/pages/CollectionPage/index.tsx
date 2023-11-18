@@ -13,10 +13,11 @@ import { customAxios } from "../../lib/customAxios";
 import { CloudList } from "../../types/CloudList";
 import storage from "../../utils/storage";
 import { useIonRouter } from "@ionic/react";
+import { UserData } from "../../types/UserData";
 
 const CollectionPage = () => {
   const ionRouter = useIonRouter();
-  const userData = storage.get("userData");
+  const [userData, setUserData] = useState<UserData>(storage.get("userData"));
   useEffect(() => {
     if (userData.userId === -1 && window.location.pathname === "/collection") {
       console.log(window.location.pathname);
@@ -70,10 +71,16 @@ const CollectionPage = () => {
   };
 
   useEffect(() => {
+    setUserData(storage.get("userData"));
+  }, [window.location.pathname]);
+
+  useEffect(() => {
+    setIsLoadingMiniCloud(true);
+    setIsLoadingCloud(true);
     if (userData.userId !== -1) {
       getCloudList();
     }
-  }, []);
+  }, [userData.userId]);
 
   return (
     <BaseDiv>
