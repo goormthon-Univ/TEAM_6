@@ -37,6 +37,7 @@ const LoginPage = () => {
         resisterloginData({
           userId: res.data.userId,
           nickname: id,
+          ischanged: false,
         });
         ionRouter.push("/main");
       })

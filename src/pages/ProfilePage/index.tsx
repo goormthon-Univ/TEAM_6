@@ -94,7 +94,7 @@ const ProfilePage = () => {
       getDoingPlans();
       getDonePlans();
     }
-  }, [userData.userId]);
+  }, [userData.userId, userData.ischanged]);
 
   return (
     <BaseDiv>
