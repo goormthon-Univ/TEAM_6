@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import storage from "../../utils/storage";
 import { useIonRouter } from "@ionic/react";
 import { toDayString } from "../../utils/dayString";
+import CloudExplainModal from "../../components/mainComponents/CloudExplainModal";
 
 const MainPage = () => {
   const ionRouter = useIonRouter();
@@ -48,6 +49,14 @@ const MainPage = () => {
   const [currentPlan, setCurrentPlan] = React.useState<
     ShortPlan | YearPlan | undefined
   >(undefined);
+
+  const modal = React.useRef<HTMLIonModalElement>(null);
+
+  function dismiss() {
+      modal.current?.dismiss();
+      getPlanList();
+      setIsEditing(false);
+  }
 
   const getPlanList = async () => {
     await customAxios
@@ -94,20 +103,26 @@ const MainPage = () => {
         .post("/YearPlans", data)
         .then((res) => {
           console.log(window.location.hostname);
+          modal.current?.present();
         })
         .catch((error) => {
           console.log(window.location.hostname);
           console.log("1년 목표 등록 실패");
+          modal.current?.present();
           console.log(error);
         });
     } else {
       await customAxios
         .post("/ShortPlans", data)
         .then((res) => {
-          console.log(window.location.hostname);
+          console.log(window.location.hostname); 
+          modal.current?.present();
+          setIsEditing(false);
+          getPlanList();
         })
         .catch((error) => {
           console.log(window.location.hostname);
+          modal.current?.present();
           console.log("단기 목표 등록 실패");
           console.log(error);
         });
@@ -278,6 +293,7 @@ const MainPage = () => {
                 }}
               />
             </ObjectInputContainer>
+            <CloudExplainModal isEditing={true} modal={modal} dismiss={dismiss} />
           </>
         )}
       </IonContent>
