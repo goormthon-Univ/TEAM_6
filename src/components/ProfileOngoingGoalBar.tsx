@@ -42,8 +42,6 @@ const ProfileOngoingGoalBar = ({
       await customAxios
         .put(`/DailyPlan/shortPlan/${id}`, prop)
         .then((res) => {
-          console.log("short 고정 주 목표 설정 성공");
-          console.log(res);
           const user = storage.get("userData");
           storage.set("userData", {
             userId: user.userId,
@@ -60,8 +58,6 @@ const ProfileOngoingGoalBar = ({
       await customAxios
         .put(`/DailyPlan/yearPlan/${id}`, prop)
         .then((res) => {
-          console.log("year 고정 주 목표 설정 성공");
-          console.log(res);
           const user = storage.get("userData");
           storage.set("userData", {
             userId: user.userId,
@@ -81,7 +77,6 @@ const ProfileOngoingGoalBar = ({
 
   const handleSubmitWeekGoal = async (prop: DailyPlanRequest) => {
     await setRequestDailyPlanElement(prop);
-    console.log(prop);
   };
 
   const handleDeleteGoal = async () => {
@@ -89,8 +84,6 @@ const ProfileOngoingGoalBar = ({
       await customAxios
         .delete("/DoingPlan", { data: { shortPlanId: id } })
         .then((res) => {
-          console.log("단기 목표 삭제 성공");
-          console.log(res);
           const user = storage.get("userData");
           storage.set("userData", {
             userId: user.userId,
@@ -113,8 +106,6 @@ const ProfileOngoingGoalBar = ({
       await customAxios
         .delete("/DoingPlan", { data: { yearPlanId: id } })
         .then((res) => {
-          console.log("장기 목표 삭제 성공");
-          console.log(res);
           const user = storage.get("userData");
           storage.set("userData", {
             userId: user.userId,

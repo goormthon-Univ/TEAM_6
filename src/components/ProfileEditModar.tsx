@@ -98,8 +98,6 @@ const ProfileEditModar = ({
       await customAxios
         .get(`/DailyPlan/shortPlan/${id}`)
         .then((res) => {
-          console.log("short 고정 주 목표 로드 성공");
-          console.log(filterDailyPlan(res.data));
           setDailyPlan(filterDailyPlan(res.data));
         })
         .catch((error) => {
@@ -110,8 +108,6 @@ const ProfileEditModar = ({
       await customAxios
         .get(`/DailyPlan/yearPlan/${id}`)
         .then((res) => {
-          console.log("year 고정 주 목표 로드 성공");
-          console.log(filterDailyPlan(res.data));
           setDailyPlan(filterDailyPlan(res.data));
         })
         .catch((error) => {

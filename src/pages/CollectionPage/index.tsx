@@ -20,10 +20,7 @@ const CollectionPage = () => {
   const [userData, setUserData] = useState<UserData>(storage.get("userData"));
   useEffect(() => {
     if (userData.userId === -1 && window.location.pathname === "/collection") {
-      console.log(window.location.pathname);
       ionRouter.push("/login");
-    } else {
-      console.log("로그인?", userData);
     }
   }, [window.location.pathname]);
 
@@ -45,8 +42,6 @@ const CollectionPage = () => {
     await customAxios
       .get("/collection?type=2")
       .then((res) => {
-        console.log("미니구름 컬렉션");
-        console.log(res.data);
         setMiniCloudList(res.data);
         setIsLoadingMiniCloud(false);
       })
@@ -58,8 +53,6 @@ const CollectionPage = () => {
     await customAxios
       .get("/collection?type=3")
       .then((res) => {
-        console.log("구름 컬렉션");
-        console.log(res.data);
         setCloudList(res.data);
         setIsLoadingCloud(false);
       })
