@@ -20,7 +20,7 @@ function CloudCount({ count }: Props) {
         <Caution />
       </StyledCautionDiv>
 
-      <CloudExplainModal isEditing={false} />
+      <CloudExplainModal isEditing={false} isYearly={true} />
     </Container>
   )
 }
