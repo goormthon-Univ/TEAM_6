@@ -2,38 +2,39 @@ import React from "react";
 import { IonModal } from "@ionic/react";
 import { RefObject } from "react";
 import styled from "styled-components";
-import Smile from "../../assets/submodal/Smile.png";
-interface MainGoalCompleteModalProps {
+import CloudImageById from "../../assets/collection/CloudImageById";
+
+interface CloudCreateCompleteModalProps {
   modal: RefObject<HTMLIonModalElement>;
   openId: string;
+  cloudImgId: number;
 }
 
-const MainGoalCompleteModal = ({
+const CloudCreateCompleteModal = ({
   modal,
   openId,
-}: MainGoalCompleteModalProps) => {
+  cloudImgId,
+}: CloudCreateCompleteModalProps) => {
   return (
     <StyledIonModal ref={modal} trigger={openId}>
       <BaseDiv>
-        <img src={Smile} alt="Login" />
         <StyledTextBox>
-          목표를 100%
-          <br />
-          달성했어요! 축하해요!!
-          <br />
-          앞으로도 더 빛날 당신을 응원해요!
+          {cloudImgId > 4 ? "구름" : "미니 구름"}이 만들어졌어요!
         </StyledTextBox>
+        <StyledDiv>
+          <StyledCloudImageById imgId={String(cloudImgId)} />
+        </StyledDiv>
       </BaseDiv>
     </StyledIonModal>
   );
 };
 
-export default MainGoalCompleteModal;
+export default CloudCreateCompleteModal;
 
 const StyledIonModal = styled(IonModal)`
   --width: fit-content;
-  --min-width: 250px;
   --height: fit-content;
+  --border-radius: 6px;
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
   --border-radius: 1rem;
 `;
@@ -47,23 +48,24 @@ const BaseDiv = styled.div`
   justify-content: center;
   align-items: center;
 
+  width: 15rem;
   height: 10rem;
-  width: 16rem;
 
-  background: linear-gradient(to top, #ffe4ae, #ffb8ae);
+  background-color: #fff;
 `;
 
 const StyledTextBox = styled.div`
   margin-top: 0.5rem;
   text-align: center;
   font-size: 1rem;
+  font-weight: 600;
   width: 14rem;
 `;
+const StyledDiv = styled.div`
+  margin-top: 1rem;
+`;
 
-const StyledCautionTextBox = styled.div`
-  margin-top: 0.5rem;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #fc8787;
-  width: 13rem;
+const StyledCloudImageById = styled(CloudImageById)`
+  /* padding-top: 2rem; */
+  /* padding: 1rem; */
 `;
