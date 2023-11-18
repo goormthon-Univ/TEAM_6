@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonContent,
   IonLabel,
@@ -25,10 +25,11 @@ import storage from "../../utils/storage";
 import { useIonRouter } from "@ionic/react";
 import { toDayString } from "../../utils/dayString";
 import CloudExplainModal from "../../components/mainComponents/CloudExplainModal";
+import { UserData } from "../../types/UserData";
 
 const MainPage = () => {
   const ionRouter = useIonRouter();
-  const userData = storage.get("userData");
+  const [userData, setUserData] = useState<UserData>(storage.get("userData"));
   useEffect(() => {
     if (userData.userId === -1 && window.location.pathname === "/main") {
       console.log(window.location.pathname);
@@ -37,6 +38,8 @@ const MainPage = () => {
       console.log("로그인?", userData);
     }
   }, [window.location.pathname]);
+
+  const [isLoadingPlanList, setIsLoadingPlanList] = useState<boolean>(true);
 
   const [isObjectExist, setIsObjectExist] = React.useState(true);
   const [isEditing, setIsEditing] = React.useState(false);
@@ -53,9 +56,9 @@ const MainPage = () => {
   const modal = React.useRef<HTMLIonModalElement>(null);
 
   function dismiss() {
-      modal.current?.dismiss();
-      getPlanList();
-      setIsEditing(false);
+    modal.current?.dismiss();
+    getPlanList();
+    setIsEditing(false);
   }
 
   const getPlanList = async () => {
@@ -64,17 +67,26 @@ const MainPage = () => {
       .then((res) => {
         console.log(window.location.hostname);
         setPlanList([...res.data.shortPlans, ...res.data.yearPlans]);
+        setIsLoadingPlanList(false);
       })
       .catch((error) => {
         console.log(window.location.hostname);
         console.log("메인 목록 가져오기 실패");
         console.log(error);
+        setIsLoadingPlanList(false);
       });
   };
 
   useEffect(() => {
-    getPlanList();
-  }, []);
+    setUserData(storage.get("userData"));
+  }, [window.location.pathname]);
+
+  useEffect(() => {
+    setIsLoadingPlanList(true);
+    if (userData.userId !== -1) {
+      getPlanList();
+    }
+  }, [userData.userId]);
 
   useEffect(() => {
     if (planList && planList[currentPage || 0]) {
@@ -115,7 +127,7 @@ const MainPage = () => {
       await customAxios
         .post("/ShortPlans", data)
         .then((res) => {
-          console.log(window.location.hostname); 
+          console.log(window.location.hostname);
           modal.current?.present();
           setIsEditing(false);
           getPlanList();
@@ -155,44 +167,53 @@ const MainPage = () => {
 
         {isObjectExist ? (
           <>
-            <ObjectContainer>
-              <YearObjectTitle
-                object_title={
-                  currentPlan?.yearPlan || currentPlan?.shortPlan || ""
-                }
-              />
-              {currentPlan?.halfPlan && (
-                <HalfYearObjectTitle object={currentPlan?.halfPlan} />
-              )}
-            </ObjectContainer>
+            {isLoadingPlanList ? (
+              <></>
+            ) : (
+              <>
+                <ObjectContainer>
+                  <YearObjectTitle
+                    object_title={
+                      currentPlan?.yearPlan || currentPlan?.shortPlan || ""
+                    }
+                  />
+                  {currentPlan?.halfPlan && (
+                    <HalfYearObjectTitle object={currentPlan?.halfPlan} />
+                  )}
+                </ObjectContainer>
 
-            <StatusBar
-              title="구름 완성까지"
-              total={13}
-              current={currentPlan?.miniCloud || 0}
-            />
-            <CloudCount count={currentPlan?.steam || 0} />
+                <StatusBar
+                  title="구름 완성까지"
+                  total={13}
+                  current={currentPlan?.miniCloud || 0}
+                />
+                <CloudCount count={currentPlan?.steam || 0} />
 
-            <HumidityStatus total={7} current={currentPlan?.waterDrop || 0} />
+                <HumidityStatus
+                  total={7}
+                  current={currentPlan?.waterDrop || 0}
+                />
 
-            {currentPlan?.monthPlan && (
-              <MonthObjectTitle object={currentPlan?.monthPlan} />
+                {currentPlan?.monthPlan && (
+                  <MonthObjectTitle object={currentPlan?.monthPlan} />
+                )}
+
+                <TodayTodo
+                  getPlanList={getPlanList}
+                  day={toDayString(((dayjs().day() + 6) % 7) + 1)}
+                  todo={currentPlan?.dailyPlan}
+                  isDone={currentPlan?.done || false}
+                  isPass={currentPlan?.exception || false}
+                  steam={currentPlan?.steam}
+                  waterDrop={currentPlan?.waterDrop}
+                  miniCloud={currentPlan?.miniCloud}
+                  isYearly={currentPlan?.yearPlan !== undefined}
+                  plan_id={
+                    currentPlan?.year_plan_id || currentPlan?.short_plan_id || 1
+                  }
+                />
+              </>
             )}
-
-            <TodayTodo
-              getPlanList={getPlanList} 
-              day={toDayString((dayjs().day()+6)%7+1)}
-              todo={currentPlan?.dailyPlan}
-              isDone={currentPlan?.done || false}
-              isPass={currentPlan?.exception || false}
-              steam={currentPlan?.steam}
-              waterDrop={currentPlan?.waterDrop}
-              miniCloud={currentPlan?.miniCloud}
-              isYearly={currentPlan?.yearPlan !== undefined}
-              plan_id={
-                currentPlan?.year_plan_id || currentPlan?.short_plan_id || 1
-              }
-            />
           </>
         ) : (
           <>
@@ -241,8 +262,12 @@ const MainPage = () => {
                     const monthlyPlan = [];
                     for (let i = 2; i < 8; i++) {
                       monthlyPlan.push({
-                        year: dayjs().add(i - 1, "month").year(),
-                        month: dayjs().add(i - 1, "month").month(),
+                        year: dayjs()
+                          .add(i - 1, "month")
+                          .year(),
+                        month: dayjs()
+                          .add(i - 1, "month")
+                          .month(),
                         monthlyPlan: form[i].value,
                       });
                     }
@@ -254,7 +279,7 @@ const MainPage = () => {
                       });
                     }
                     data = {
-                      userId: storage.get('userData').userId,
+                      userId: storage.get("userData").userId,
                       year: dayjs().year(),
                       yearPlan: form[0].value,
                       halfPlan: form[1].value,
@@ -281,7 +306,7 @@ const MainPage = () => {
                       });
                     }
                     data = {
-                      userId: storage.get('userData').userId,
+                      userId: storage.get("userData").userId,
                       year: dayjs().year(),
                       period: period,
                       shortPlan: form[0].value,
@@ -293,7 +318,11 @@ const MainPage = () => {
                 }}
               />
             </ObjectInputContainer>
-            <CloudExplainModal isEditing={true} modal={modal} dismiss={dismiss} />
+            <CloudExplainModal
+              isEditing={true}
+              modal={modal}
+              dismiss={dismiss}
+            />
           </>
         )}
       </IonContent>
