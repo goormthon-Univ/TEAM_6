@@ -14,12 +14,15 @@ type Props = {
   miniCloud?: number;
   isYearly: boolean;
   plan_id: number;
+  getPlanList: () => Promise<void>;
 }
 
-function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYearly, plan_id}: Props) {
+function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYearly, plan_id, getPlanList}: Props) {
 
   const [currDone, setCurrDone] = useState(isDone);
   const [currPass, setCurrPass] = useState(isPass);
+
+  console.log(isYearly);
 
   const setDone = async (exception: boolean) => {
     let uri = '/main/DailyDone?';
@@ -30,22 +33,24 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
       "short_plan_id": plan_id,
     }
 
-    if ( steam && steam >= 6 ) { // 수증기가 완성되는 경우
-      console.log('수증기 생성');
-      uri += 'type=1&';
-      if ( waterDrop && waterDrop >= 3 ) { // 미니 구름이 완성되는 경우
-        console.log('미니 구름 완성');
-        uri += 'type=2&';
-        request_body = Object.assign(request_body, {
-          'img' : Math.floor(Math.random() * 4) + 1
-        })
+    if ( waterDrop && waterDrop >= 6 ) { // 수증기가 완성되는 경우
+      if ( steam && steam >= 3 ) { // 미니 구름이 완성되는 경우
         if ( miniCloud && miniCloud >= 12) { // 구름이 완성되는 경우
           console.log('구름 완성');
           uri += 'type=3&';
           request_body = Object.assign(request_body, {
-            'img' : Math.floor(Math.random() * 8) + 1
+            'image_num' : Math.floor(Math.random() * 8) + 1
+          })
+        } else {
+          console.log('미니 구름 완성');
+          uri += 'type=2&';
+          request_body = Object.assign(request_body, {
+            'image_num' : Math.floor(Math.random() * 4) + 1
           })
         }
+      } else {
+        console.log('수증기 생성');
+        uri += 'type=1&';
       }
     } else {
       uri += 'type=0&';
@@ -62,6 +67,9 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
       .then((res) => {
         console.log(res);
         console.log(window.location.hostname);
+      })
+      .then(() => {
+        getPlanList();
       })
       .catch((error) => {
         console.log(window.location.hostname);
@@ -85,6 +93,9 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
         console.log(res);
         //  console.log(window.location.hostname);
       })
+      .then(() => {
+        getPlanList();
+      })
       .catch((error) => {
         console.log(window.location.hostname);
         console.log("달성한 일 취소 실패");
@@ -98,7 +109,9 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
       <TodoContainer>
         <TodoBox>
           <DayBox>{day}</DayBox>
-          <TodoCheck checked={currDone} color='medium' onIonChange={(e) => {
+          <TodoCheck checked={currDone} color='medium' 
+          disabled={currPass || waterDrop===0 && steam===0 && (isDone===true||isPass===true)}
+          onIonChange={(e) => {
             setCurrDone(e.detail.checked);
             if ( e.detail.checked === true ) {
               setDone(false)
@@ -108,7 +121,9 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
           }}>{todo}</TodoCheck>
         </TodoBox>
         <PassBox>
-          <PassCheck checked={currPass} color='medium' onIonChange={(e) => {
+          <PassCheck checked={currPass} color='medium' 
+          disabled={currDone || waterDrop===0 && steam===0 && (isDone===true||isPass===true)}
+          onIonChange={(e) => {
             setCurrPass(e.detail.checked);
             if ( e.detail.checked === true ) {
               setDone(true)
@@ -138,7 +153,7 @@ const TodoContainer = styled.div`
 
 const DayBox = styled.div`
   background: var(--ion-color-secondary-shade);
-  width: 2rem;
+  width: 2.4rem;
   height: 2rem;
   display: flex;
   justify-content: center;
