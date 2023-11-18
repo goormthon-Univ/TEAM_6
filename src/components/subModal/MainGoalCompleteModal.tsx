@@ -3,7 +3,7 @@ import { IonModal } from "@ionic/react";
 import { RefObject } from "react";
 import styled from "styled-components";
 import CautionRed from "../../assets/collection/CautionRed";
-
+import Smile from "../../assets/submodal/Smile.png";
 interface MainGoalCompleteModalProps {
   modal: RefObject<HTMLIonModalElement>;
   openId: string;
@@ -16,6 +16,7 @@ const MainGoalCompleteModal = ({
   return (
     <StyledIonModal ref={modal} trigger={openId}>
       <BaseDiv>
+        <img src={Smile} alt="Login" />
         <StyledTextBox>
           목표를 100%
           <br />

@@ -3,6 +3,7 @@ import { IonModal } from "@ionic/react";
 import { RefObject } from "react";
 import styled from "styled-components";
 import CautionRed from "../../assets/collection/CautionRed";
+import Sad from "../../assets/submodal/Sad.png";
 
 interface MainUndoCautionModalProps {
   modal: RefObject<HTMLIonModalElement>;
@@ -14,7 +15,10 @@ const MainUndoCautionModal = ({ modal, openId }: MainUndoCautionModalProps) => {
     <StyledIonModal ref={modal} trigger={openId}>
       <BaseDiv>
         <CautionRed />
-        <StyledButtonDiv>오늘은 사정이 있어서 못했어요</StyledButtonDiv>
+        <StyledButtonDiv>
+          <img src={Sad} alt="Login" />
+          오늘은 사정이 있어서 못했어요
+        </StyledButtonDiv>
         <StyledTextBox>
           오늘은 사정이 있어서 못했어요
           <br />
