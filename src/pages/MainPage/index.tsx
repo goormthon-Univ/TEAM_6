@@ -281,8 +281,8 @@ const MainPage = () => {
                       });
                     }
                     data = {
-                      userId: 1,
-                      year: dayjs().year,
+                      userId: storage.get('userData').userId,
+                      year: dayjs().year(),
                       period: period,
                       shortPlan: form[0].value,
                       dailyPlan: dailyPlan,
