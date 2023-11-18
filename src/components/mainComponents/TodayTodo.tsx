@@ -81,7 +81,9 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
         console.log(window.location.hostname);
       })
       .then(() => {
-        getPlanList();
+        setTimeout(() => {
+          getPlanList();
+        }, 2000);
       })
       .catch((error) => {
         console.log(window.location.hostname);

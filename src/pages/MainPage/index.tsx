@@ -141,8 +141,6 @@ const MainPage = () => {
         .then((res) => {
           console.log(window.location.hostname);
           modal.current?.present();
-          setIsEditing(false);
-          getPlanList();
           const user = storage.get("userData");
           storage.set("userData", {
             userId: user.userId,
