@@ -240,12 +240,12 @@ const MainPage = () => {
             )}
           </>
         ) : (
-          <>
+          <Container>
             <IonLabel
               style={{
                 display: `${isEditing ? "none" : "flex"}`,
                 justifyContent: "center",
-                marginTop: "50%",
+                marginTop: '40vh',
               }}
             >
               목표가 없습니다. 새로운 목표를 설정해보세요.
@@ -347,12 +347,19 @@ const MainPage = () => {
               modal={modal}
               dismiss={dismiss}
             />
-          </>
+          </Container>
         )}
       </IonContent>
     </IonPage>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const ObjectLabel = styled(IonLabel)`
   .segment-button-checked &:before {
@@ -401,6 +408,8 @@ const MakeObjectBtn = styled.button`
 const ObjectInputContainer = styled.div<{ $isEditing: boolean }>`
   display: ${(props) => (props.$isEditing ? "flex" : "none")};
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 0 auto;
   width: 80%;
 `;

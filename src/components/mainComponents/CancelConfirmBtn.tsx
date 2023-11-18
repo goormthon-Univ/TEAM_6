@@ -19,6 +19,7 @@ function CancelConfirmBtn({hasCancel, confirmMessage, onCancel, onConfirm}: Prop
 
 const Container = styled.div`
   display: flex;
+  width: 70%;
   justify-content: space-between;
 `
 

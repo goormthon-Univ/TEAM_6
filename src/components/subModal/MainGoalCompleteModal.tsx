@@ -4,7 +4,7 @@ import { RefObject } from "react";
 import styled from "styled-components";
 import Smile from "../../assets/submodal/Smile.png";
 interface MainGoalCompleteModalProps {
-  modal: RefObject<HTMLIonModalElement>;
+  modal?: RefObject<HTMLIonModalElement>;
   openId: string;
 }
 
