@@ -89,21 +89,21 @@ const CollectionPage = () => {
       </CollectionTopDiv>
       <CollectionBottomDiv>
         <CollectionBtnContainer>
-          <CloudCircleFrame CloudImg={Cloud02} />
-          <CollectionBtnBox>
-            <CollectionButton id="cloud">구름 컬렉션</CollectionButton>
-            <SpaceSpan />
-            <StyledCautionDiv id="cloudCaution">
-              <Caution />
-            </StyledCautionDiv>
-          </CollectionBtnBox>
-        </CollectionBtnContainer>
-        <CollectionBtnContainer>
           <CloudCircleFrame CloudImg={Cloud01} />
           <CollectionBtnBox>
             <CollectionButton id="miniCloud">미니 구름 컬렉션</CollectionButton>
             <SpaceSpan />
             <StyledCautionDiv id="miniCloudCaution">
+              <Caution />
+            </StyledCautionDiv>
+          </CollectionBtnBox>
+        </CollectionBtnContainer>
+        <CollectionBtnContainer>
+          <CloudCircleFrame CloudImg={Cloud02} />
+          <CollectionBtnBox>
+            <CollectionButton id="cloud">구름 컬렉션</CollectionButton>
+            <SpaceSpan />
+            <StyledCautionDiv id="cloudCaution">
               <Caution />
             </StyledCautionDiv>
           </CollectionBtnBox>
