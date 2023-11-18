@@ -226,7 +226,7 @@ const UserInfoTopDiv = styled.div`
   align-items: center;
 
   border: 0;
-  border-bottom: 1px solid #9c9c9c;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 const BaseDiv = styled(IonPage)`
@@ -269,7 +269,7 @@ const UserInfoMiddleDiv = styled.div`
   width: 100%;
 
   border: 0;
-  border-bottom: 1px solid #9c9c9c;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 const OngoingGoalTitleBox = styled.div`
