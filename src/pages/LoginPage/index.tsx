@@ -13,10 +13,7 @@ const LoginPage = () => {
   const userData = storage.get("userData");
   useEffect(() => {
     if (userData.userId !== -1 && window.location.pathname === "/login") {
-      console.log(window.location.pathname);
       ionRouter.push("/main");
-    } else {
-      console.log("로그인?", userData);
     }
   }, [window.location.pathname]);
 
@@ -31,8 +28,6 @@ const LoginPage = () => {
         password: password,
       })
       .then((res) => {
-        console.log("로그인 성공");
-        console.log(res.data);
         setIsLoginFailed(false);
         resisterloginData({
           userId: res.data.userId,
@@ -50,7 +45,6 @@ const LoginPage = () => {
 
   const resisterloginData = (prop: UserData) => {
     storage.set("userData", prop);
-    console.log("로컬 저장 완료");
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

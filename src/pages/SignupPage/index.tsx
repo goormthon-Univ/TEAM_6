@@ -14,10 +14,7 @@ const SignupPage = () => {
   const userData = storage.get("userData");
   useEffect(() => {
     if (userData.userId !== -1 && window.location.pathname === "/signup") {
-      console.log(window.location.pathname);
       ionRouter.push("/main");
-    } else {
-      console.log("로그인?", userData);
     }
   }, [window.location.pathname]);
 
@@ -34,8 +31,6 @@ const SignupPage = () => {
         password: password,
       })
       .then((res) => {
-        console.log("회원가입 성공");
-        console.log(res.data);
         ionRouter.push("/login");
       })
       .catch((error) => {
@@ -61,8 +56,6 @@ const SignupPage = () => {
     const res = await customAxios
       .get(`/auth/${id}/exists`)
       .then((res) => {
-        console.log("닉네임 체크 성공");
-        console.log(res.data);
         setIsOkNickname(res?.data?.exists ? false : true);
         return res?.data?.exists ? false : true;
       })

@@ -21,10 +21,7 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState<UserData>(storage.get("userData"));
   useEffect(() => {
     if (userData.userId === -1 && window.location.pathname === "/profile") {
-      console.log(window.location.pathname);
       ionRouter.push("/login");
-    } else {
-      console.log("로그인?", userData);
     }
   }, [window.location.pathname]);
 
@@ -46,14 +43,10 @@ const ProfilePage = () => {
     await customAxios
       .get("/DoingPlan")
       .then((res) => {
-        console.log(window.location.hostname);
-        console.log("DoingPlans: ");
-        console.log(res.data);
         setDoingPlan(res.data);
         setIsLoadingOngoingGoalList(false);
       })
       .catch((error) => {
-        console.log(window.location.hostname);
         console.log("진행 목록 가져오기 실패");
         console.log(error);
         setIsLoadingOngoingGoalList(false);
@@ -64,14 +57,10 @@ const ProfilePage = () => {
     await customAxios
       .get("/DonePlan")
       .then((res) => {
-        console.log(window.location.hostname);
-        console.log("DonePlans: ");
-        console.log(res.data);
         setDonePlan(res.data);
         setIsLoadingCompleteGoalList(false);
       })
       .catch((error) => {
-        console.log(window.location.hostname);
         console.log("완료 목록 가져오기 실패");
         console.log(error);
         setIsLoadingCompleteGoalList(false);
