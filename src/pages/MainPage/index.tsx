@@ -205,7 +205,7 @@ const MainPage = () => {
                 </ObjectContainer>
 
                 <StatusBar
-                  title="구름 완성까지"
+                  title={currentPlan?.yearPlan !== undefined ? "구름 완성까지" : "목표 달성까지"}
                   total={13}
                   current={currentPlan?.miniCloud || 0}
                 />
