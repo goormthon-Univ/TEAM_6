@@ -23,6 +23,7 @@ import { ShortPlan } from "../../types/ShortPlan";
 import dayjs from "dayjs";
 import storage from "../../utils/storage";
 import { useIonRouter } from "@ionic/react";
+import { toDayString } from "../../utils/dayString";
 
 const MainPage = () => {
   const ionRouter = useIonRouter();
@@ -87,6 +88,7 @@ const MainPage = () => {
   }, [currentPage]);
 
   const addPlan = async (data: unknown) => {
+    console.log(data);
     if (isYearly) {
       await customAxios
         .post("/YearPlans", data)
@@ -163,14 +165,15 @@ const MainPage = () => {
             )}
 
             <TodayTodo
-              day={"금"}
+              getPlanList={getPlanList} 
+              day={toDayString((dayjs().day()+6)%7+1)}
               todo={currentPlan?.dailyPlan}
               isDone={currentPlan?.done || false}
               isPass={currentPlan?.exception || false}
               steam={currentPlan?.steam}
               waterDrop={currentPlan?.waterDrop}
               miniCloud={currentPlan?.miniCloud}
-              isYearly={isYearly}
+              isYearly={currentPlan?.yearPlan !== undefined}
               plan_id={
                 currentPlan?.year_plan_id || currentPlan?.short_plan_id || 1
               }
@@ -223,8 +226,8 @@ const MainPage = () => {
                     const monthlyPlan = [];
                     for (let i = 2; i < 8; i++) {
                       monthlyPlan.push({
-                        year: dayjs().add(i - 1, "month").year,
-                        month: dayjs().add(i - 1, "month").month,
+                        year: dayjs().add(i - 1, "month").year(),
+                        month: dayjs().add(i - 1, "month").month(),
                         monthlyPlan: form[i].value,
                       });
                     }
@@ -236,8 +239,8 @@ const MainPage = () => {
                       });
                     }
                     data = {
-                      userId: 1,
-                      year: dayjs().year,
+                      userId: storage.get('userData').userId,
+                      year: dayjs().year(),
                       yearPlan: form[0].value,
                       halfPlan: form[1].value,
                       monthlyPlan: monthlyPlan,
