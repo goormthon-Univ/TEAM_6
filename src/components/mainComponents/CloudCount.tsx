@@ -1,5 +1,7 @@
 import { IonLabel } from '@ionic/react';
 import styled from 'styled-components'
+import Caution from '../../assets/collection/Caution';
+import CloudExplainModal from './CloudExplainModal';
 
 type Props = {
   count: number;
@@ -14,6 +16,11 @@ function CloudCount({ count }: Props) {
           <CloudCircle isDone={e < count } key={'cloud' + e} />
         ))
       }
+      <StyledCautionDiv id="cloudExplainModal">
+        <Caution />
+      </StyledCautionDiv>
+
+      <CloudExplainModal isEditing={false} />
     </Container>
   )
 }
@@ -25,7 +32,7 @@ const Container = styled.div`
   justify-content: flex-start;
   width: 80%;
   margin: 1rem auto;
-`
+`;
 
 const CloudCircle = styled.div<{isDone: boolean}>`
   margin: 0.2rem;
@@ -33,6 +40,11 @@ const CloudCircle = styled.div<{isDone: boolean}>`
   height: 2rem;
   border-radius: 2rem;
   background-color: ${(props) => props.isDone ? 'var(--ion-color-primary-tint)' : 'var(--ion-color-secondary)'};
-`
+`;
+
+const StyledCautionDiv = styled.div`
+  display: flex;
+  margin-left: 1rem;
+`;
 
 export default CloudCount
