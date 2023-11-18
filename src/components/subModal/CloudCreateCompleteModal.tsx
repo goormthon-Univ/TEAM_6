@@ -5,7 +5,7 @@ import styled from "styled-components";
 import CloudImageById from "../../assets/collection/CloudImageById";
 
 interface CloudCreateCompleteModalProps {
-  modal: RefObject<HTMLIonModalElement>;
+  modal?: RefObject<HTMLIonModalElement>;
   openId: string;
   cloudImgId: number;
 }

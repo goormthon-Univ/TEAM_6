@@ -6,7 +6,7 @@ import CautionRed from "../../assets/collection/CautionRed";
 import Sad from "../../assets/submodal/Sad.png";
 
 interface MainUndoCautionModalProps {
-  modal: RefObject<HTMLIonModalElement>;
+  modal?: RefObject<HTMLIonModalElement>;
   openId: string;
 }
 
