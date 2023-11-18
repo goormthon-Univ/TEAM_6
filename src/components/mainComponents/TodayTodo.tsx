@@ -1,8 +1,12 @@
 import { IonCheckbox, IonIcon, IonLabel } from '@ionic/react';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { checkmarkOutline } from 'ionicons/icons'
 import { customAxios } from '../../lib/customAxios';
+import CloudCreateCompleteModal from '../subModal/CloudCreateCompleteModal';
+import MainGoalCompleteModal from '../subModal/MainGoalCompleteModal';
+import MainUndoCautionModal from '../subModal/MainUndoCautionModal';
+import Caution from '../../assets/collection/Caution';
 
 type Props = {
   day: string;
@@ -21,6 +25,10 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
 
   const [currDone, setCurrDone] = useState(isDone);
   const [currPass, setCurrPass] = useState(isPass);
+  const image_num = useRef(0);
+
+  const goalComplete = useRef<HTMLIonModalElement>(null);
+  const cloudComplete = useRef<HTMLIonModalElement>(null);
 
   console.log(isYearly);
 
@@ -37,15 +45,19 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
       if ( steam && steam >= 3 ) { // 미니 구름이 완성되는 경우
         if ( miniCloud && miniCloud >= 12) { // 구름이 완성되는 경우
           console.log('구름 완성');
+          image_num.current = Math.floor(Math.random() * 8) + 1;
+          goalComplete.current?.present();
           uri += 'type=3&';
           request_body = Object.assign(request_body, {
-            'image_num' : Math.floor(Math.random() * 8) + 1
+            'image_num' : image_num.current,
           })
         } else {
           console.log('미니 구름 완성');
+          cloudComplete.current?.present();
+          image_num.current = Math.floor(Math.random() * 4) + 1;
           uri += 'type=2&';
           request_body = Object.assign(request_body, {
-            'image_num' : Math.floor(Math.random() * 4) + 1
+            'image_num' : image_num.current,
           })
         }
       } else {
@@ -131,12 +143,21 @@ function TodayTodo({day, todo, isDone, isPass, steam, waterDrop, miniCloud, isYe
               setUndone(true)
             }
           }}>😔 오늘은 사정이 있어서 못했어요</PassCheck>
+          <CautionContainer id='caution'>
+            <Caution />
+          </CautionContainer>
         </PassBox>
       </TodoContainer>
+      <CloudCreateCompleteModal openId='' cloudImgId={image_num.current} modal={cloudComplete} />
+      <MainGoalCompleteModal openId='' modal={goalComplete} />
+      <MainUndoCautionModal openId='caution'/>
     </Container>
   )
 }
 
+const CautionContainer = styled.div`
+  margin-left: 1rem;
+`;
 
 const Container = styled.div`
   width: 80%;
