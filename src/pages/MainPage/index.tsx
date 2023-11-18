@@ -32,10 +32,7 @@ const MainPage = () => {
   const [userData, setUserData] = useState<UserData>(storage.get("userData"));
   useEffect(() => {
     if (userData.userId === -1 && window.location.pathname === "/main") {
-      console.log(window.location.pathname);
       ionRouter.push("/login");
-    } else {
-      console.log("로그인?", userData);
     }
   }, [window.location.pathname]);
 
@@ -205,7 +202,11 @@ const MainPage = () => {
                 </ObjectContainer>
 
                 <StatusBar
-                  title={currentPlan?.yearPlan !== undefined ? "구름 완성까지" : "목표 달성까지"}
+                  title={
+                    currentPlan?.yearPlan !== undefined
+                      ? "구름 완성까지"
+                      : "목표 달성까지"
+                  }
                   total={13}
                   current={currentPlan?.miniCloud || 0}
                 />
@@ -243,7 +244,7 @@ const MainPage = () => {
               style={{
                 display: `${isEditing ? "none" : "flex"}`,
                 justifyContent: "center",
-                marginTop: '40vh',
+                marginTop: "40vh",
               }}
             >
               목표가 없습니다. 새로운 목표를 설정해보세요.
