@@ -9,6 +9,7 @@ const storage = {
     const defaultValue: UserData = {
       userId: -1,
       nickname: "구르미",
+      ischanged: false,
     };
     const value = localStorage.getItem(key);
     return (value ? JSON.parse(value) : defaultValue) as UserData;

@@ -5,12 +5,9 @@ import styled from "styled-components";
 import ProfileEditModar from "./ProfileEditModar";
 import ProfileDeleteModar from "./ProfileDeleteModar";
 import { customAxios } from "../lib/customAxios";
-import {
-  DailyPlan,
-  DailyPlanElement,
-  DailyPlanRequest,
-} from "../types/DailyPlan";
-
+import { DailyPlanRequest } from "../types/DailyPlan";
+import { useIonRouter } from "@ionic/react";
+import storage from "../utils/storage";
 interface ProfileOngoingGoalBarProps {
   id: string;
   goal: string;
@@ -28,6 +25,7 @@ const ProfileOngoingGoalBar = ({
   type,
   tempId,
 }: ProfileOngoingGoalBarProps) => {
+  const ionRouter = useIonRouter();
   const [isEdit, setIsEdit] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const editGoalModal = useRef<HTMLIonModalElement>(null);
@@ -81,10 +79,24 @@ const ProfileOngoingGoalBar = ({
         .then((res) => {
           console.log("단기 목표 삭제 성공");
           console.log(res);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
+          ionRouter.push("/main");
         })
         .catch((error) => {
           console.log("단기 목표 삭제 실패");
           console.log(error);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
+          ionRouter.push("/main");
         });
     } else if (type === "year") {
       await customAxios
@@ -92,10 +104,24 @@ const ProfileOngoingGoalBar = ({
         .then((res) => {
           console.log("장기 목표 삭제 성공");
           console.log(res);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
+          ionRouter.push("/main");
         })
         .catch((error) => {
           console.log("장기 목표 삭제 실패");
           console.log(error);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
+          ionRouter.push("/main");
         });
     }
   };

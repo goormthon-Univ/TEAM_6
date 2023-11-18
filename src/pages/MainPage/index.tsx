@@ -86,7 +86,7 @@ const MainPage = () => {
     if (userData.userId !== -1) {
       getPlanList();
     }
-  }, [userData.userId]);
+  }, [userData.userId, userData.ischanged]);
 
   useEffect(() => {
     if (planList && planList[currentPage || 0]) {

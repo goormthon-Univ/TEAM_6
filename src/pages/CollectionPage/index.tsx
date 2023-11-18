@@ -80,7 +80,7 @@ const CollectionPage = () => {
     if (userData.userId !== -1) {
       getCloudList();
     }
-  }, [userData.userId]);
+  }, [userData.userId, userData.ischanged]);
 
   return (
     <BaseDiv>
