@@ -96,7 +96,6 @@ const ProfileOngoingGoalBar = ({
             nickname: user.nickname,
             ischanged: !user.ischanged,
           });
-          ionRouter.push("/main");
         });
     } else if (type === "year") {
       await customAxios
@@ -121,7 +120,6 @@ const ProfileOngoingGoalBar = ({
             nickname: user.nickname,
             ischanged: !user.ischanged,
           });
-          ionRouter.push("/main");
         });
     }
   };

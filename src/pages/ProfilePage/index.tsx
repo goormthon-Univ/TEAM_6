@@ -144,8 +144,8 @@ const ProfilePage = () => {
                   tempId={String(
                     index +
                       1 +
-                      (doingPlan?.yearPlans?.length
-                        ? doingPlan.yearPlans.length
+                      (doingPlan?.shortPlans?.length
+                        ? doingPlan.shortPlans.length
                         : 0)
                   )}
                 />

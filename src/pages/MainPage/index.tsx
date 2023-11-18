@@ -116,12 +116,24 @@ const MainPage = () => {
         .then((res) => {
           console.log(window.location.hostname);
           modal.current?.present();
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
         })
         .catch((error) => {
           console.log(window.location.hostname);
           console.log("1년 목표 등록 실패");
           modal.current?.present();
           console.log(error);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
         });
     } else {
       await customAxios
@@ -131,12 +143,24 @@ const MainPage = () => {
           modal.current?.present();
           setIsEditing(false);
           getPlanList();
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
         })
         .catch((error) => {
           console.log(window.location.hostname);
           modal.current?.present();
           console.log("단기 목표 등록 실패");
           console.log(error);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
         });
     }
   };
