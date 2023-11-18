@@ -44,10 +44,16 @@ const ProfileOngoingGoalBar = ({
         .then((res) => {
           console.log("short 고정 주 목표 설정 성공");
           console.log(res);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
           dismissEditGoalModar();
         })
         .catch((error) => {
-          console.log("short 고정 주 목표 로드 실패");
+          console.log("short 고정 주 목표 설정 실패");
           console.log(error);
         });
     } else if (type === "year") {
@@ -56,6 +62,12 @@ const ProfileOngoingGoalBar = ({
         .then((res) => {
           console.log("year 고정 주 목표 설정 성공");
           console.log(res);
+          const user = storage.get("userData");
+          storage.set("userData", {
+            userId: user.userId,
+            nickname: user.nickname,
+            ischanged: !user.ischanged,
+          });
           dismissEditGoalModar();
         })
         .catch((error) => {
